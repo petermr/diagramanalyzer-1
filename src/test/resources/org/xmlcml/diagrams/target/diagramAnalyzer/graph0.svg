@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg height="800.0" width="700.0" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="651.5" cy="12.5" r="2.0" fill="green"/>
+  </g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="789.5" cy="47.5" r="2.0" fill="green"/>
+  </g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="616.5" cy="115.5" r="2.0" fill="green"/>
+  </g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="722.5" cy="81.5" r="2.0" fill="green"/>
+  </g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="672.5" cy="149.5" r="2.0" fill="green"/>
+  </g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="648.5" cy="184.5" r="2.0" fill="green"/>
+  </g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="565.5" cy="218.5" r="2.0" fill="green"/>
+  </g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="516.5" cy="287.5" r="2.0" fill="green"/>
+  </g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="561.5" cy="252.5" r="2.0" fill="green"/>
+  </g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="335.5" cy="321.5" r="2.0" fill="green"/>
+  </g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="616.5" cy="28.5" r="2.0" fill="green"/>
+  </g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="563.5" cy="56.5" r="2.0" fill="green"/>
+  </g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="532.5" cy="88.5" r="2.0" fill="green"/>
+  </g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="524.5" cy="122.5" r="2.0" fill="green"/>
+  </g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="492.5" cy="157.5" r="2.0" fill="green"/>
+  </g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="439.5" cy="191.5" r="2.0" fill="green"/>
+  </g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="334.5" cy="231.5" r="2.0" fill="green"/>
+  </g>
+  <g opacity="0.3">
+   <circle stroke="black" stroke-width="0.5" cx="350.5" cy="268.5" r="2.0" fill="green"/>
+  </g>
+  <g fill="blue" stroke="purple" stroke-width="2.0">
+   <line stroke="black" x1="651.5" y1="12.5" x2="616.5" y2="28.5" stroke-width="0.5"/>
+  </g>
+  <g fill="blue" stroke="purple" stroke-width="2.0">
+   <line stroke="black" x1="789.5" y1="47.5" x2="616.5" y2="28.5" stroke-width="0.5"/>
+  </g>
+  <g fill="blue" stroke="purple" stroke-width="2.0">
+   <line stroke="black" x1="616.5" y1="115.5" x2="532.5" y2="88.5" stroke-width="0.5"/>
+  </g>
+  <g fill="blue" stroke="purple" stroke-width="2.0">
+   <line stroke="black" x1="722.5" y1="81.5" x2="563.5" y2="56.5" stroke-width="0.5"/>
+  </g>
+  <g fill="blue" stroke="purple" stroke-width="2.0">
+   <line stroke="black" x1="672.5" y1="149.5" x2="524.5" y2="122.5" stroke-width="0.5"/>
+  </g>
+  <g fill="blue" stroke="purple" stroke-width="2.0">
+   <line stroke="black" x1="648.5" y1="184.5" x2="492.5" y2="157.5" stroke-width="0.5"/>
+  </g>
+  <g fill="blue" stroke="purple" stroke-width="2.0">
+   <line stroke="black" x1="565.5" y1="218.5" x2="439.5" y2="191.5" stroke-width="0.5"/>
+  </g>
+  <g fill="blue" stroke="purple" stroke-width="2.0">
+   <line stroke="black" x1="516.5" y1="287.5" x2="350.5" y2="268.5" stroke-width="0.5"/>
+  </g>
+  <g fill="blue" stroke="purple" stroke-width="2.0">
+   <line stroke="black" x1="561.5" y1="252.5" x2="350.5" y2="268.5" stroke-width="0.5"/>
+  </g>
+  <g fill="blue" stroke="purple" stroke-width="2.0">
+   <line stroke="black" x1="335.5" y1="321.5" x2="334.5" y2="231.5" stroke-width="0.5"/>
+  </g>
+  <g fill="blue" stroke="purple" stroke-width="2.0">
+   <line stroke="black" x1="616.5" y1="28.5" x2="563.5" y2="56.5" stroke-width="0.5"/>
+  </g>
+  <g fill="blue" stroke="purple" stroke-width="2.0">
+   <line stroke="black" x1="563.5" y1="56.5" x2="532.5" y2="88.5" stroke-width="0.5"/>
+  </g>
+  <g fill="blue" stroke="purple" stroke-width="2.0">
+   <line stroke="black" x1="532.5" y1="88.5" x2="524.5" y2="122.5" stroke-width="0.5"/>
+  </g>
+  <g fill="blue" stroke="purple" stroke-width="2.0">
+   <line stroke="black" x1="524.5" y1="122.5" x2="492.5" y2="157.5" stroke-width="0.5"/>
+  </g>
+  <g fill="blue" stroke="purple" stroke-width="2.0">
+   <line stroke="black" x1="492.5" y1="157.5" x2="439.5" y2="191.5" stroke-width="0.5"/>
+  </g>
+  <g fill="blue" stroke="purple" stroke-width="2.0">
+   <line stroke="black" x1="439.5" y1="191.5" x2="334.5" y2="231.5" stroke-width="0.5"/>
+  </g>
+  <g fill="blue" stroke="purple" stroke-width="2.0">
+   <line stroke="black" x1="334.5" y1="231.5" x2="350.5" y2="268.5" stroke-width="0.5"/>
+  </g>
+ </g>
+</svg>
