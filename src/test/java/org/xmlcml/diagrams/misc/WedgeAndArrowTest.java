@@ -46,8 +46,10 @@ public class WedgeAndArrowTest {
 	 * @throws IOException
 	 */
 	@Test
+	@Ignore // file is  missing
 	public void testPLOS111303_004() throws IOException {
 		File rawfile = new File(PLOS_DIR, FILENAME111303_004);
+//		Image file is missing: plosone/journal.pone.0111303.g004.png
 		DEFAULT_IMAGE_PROCESSOR.setThinning(null);
 		DEFAULT_IMAGE_PROCESSOR.readAndProcessFile(rawfile);
 		File rawFile = new File("target/"+ PLOS+"/raw.png");
