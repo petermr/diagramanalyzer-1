@@ -26,7 +26,8 @@ import org.xmlcml.image.pixel.PixelGraph;
 import org.xmlcml.image.pixel.PixelIsland;
 import org.xmlcml.image.pixel.PixelIslandList;
 
-import net.sourceforge.javaocr.pmr.CharacterInterpreter;
+//import net.sourceforge.javaocr.pmr.CharacterInterpreter;
+
 import nu.xom.Element;
 
 public class PhyloTreeAnalyzerTest {
@@ -124,8 +125,7 @@ public class PhyloTreeAnalyzerTest {
 					String base = FilenameUtils.getBaseName(filename);
 					BufferedImage binary = ImageUtil.boofCVBinarization(
 							ImageIO.read(file), threshold);
-					ImageUtil
-							.writeImageQuietly(binary, new File(
+					ImageIOUtil.writeImageQuietly(binary, new File(
 									"target/binary/" + base + "_" + threshold
 											+ ".png"));
 				}
@@ -252,6 +252,10 @@ public class PhyloTreeAnalyzerTest {
 	 * 
 	 */
 	@Test
+	/** this is LONG
+	 * 
+	 */
+	@Ignore // LONG
 	public void testGetNewick94172() {
 		String[] args = {
 				"--debug",
@@ -292,6 +296,10 @@ public class PhyloTreeAnalyzerTest {
 	 * 
 	 */
 	@Test
+	/** this is LONG
+	 * 
+	 */
+	@Ignore // LONG
 	public void testGetNewick94172Distances() {
 		String[] args = {
 				"--debug", 
@@ -604,9 +612,9 @@ public class PhyloTreeAnalyzerTest {
 			throws IOException {
 		BufferedImage imageRaw = ImageIO.read(inputFile);
 		imageRaw = ImageUtil.boofCVBinarization(imageRaw, 128);
-		CharacterInterpreter interpreter = new CharacterInterpreter();
-		interpreter.loadTrainingImages(new File(
-				"src/main/resources/fonts/trainingImages/"));
+//		CharacterInterpreter interpreter = new CharacterInterpreter();
+//		interpreter.loadTrainingImages(new File(
+//				"src/main/resources/fonts/trainingImages/"));
 		for (int i = start; i < pixelIslandList.size(); i++) {
 			BufferedImage image0 = null;
 			Int2Range ibbox = null;
@@ -624,7 +632,8 @@ public class PhyloTreeAnalyzerTest {
 				if (image0.getWidth() == 0 || image0.getHeight() == 0) {
 					result = "."; // thin stuff
 				} else {
-					result = interpreter.scanBufferedImage(image0, null);
+					// skipping this
+//					result = interpreter.scanBufferedImage(image0, null);
 				}
 				SVGText text = new SVGText(bbox.getCorners()[0], result);
 				text.setFontSize(40.);

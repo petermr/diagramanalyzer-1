@@ -44,7 +44,7 @@ public class TraceTest {
 		BufferedImage defaultBinaryImage = imageProcessor.getImage();
 		ImageIOUtil.writeImageQuietly(defaultBinaryImage, new File("target/neuro/binary.png"));
 		XSliceList xSliceList = imageProcessor.getOrCreateXSliceList();
-		LOG.debug(xSliceList.size());
+		LOG.trace(xSliceList.size());
 		int N = 2;
 		List<IntArray> points = new ArrayList<IntArray>();
 		for (int i = 0; i < xSliceList.size() - 1; i++) {
@@ -52,7 +52,7 @@ public class TraceTest {
 			XSlice slice1 = xSliceList.get(i+1);
 			IntArray curve = new IntArray();
 			if (slice0.size() > N) {
-				LOG.debug(i+"; "+slice0+"; "+slice0.get(0)+"; "+slice0.get(slice0.size() - 1));
+				LOG.trace(i+"; "+slice0+"; "+slice0.get(0)+"; "+slice0.get(slice0.size() - 1));
 			}
 			for (int j = 0; j < N; j++) {
 //				IntRange range0 = (j == 0) ? slice0.get(0) : slice0.get(slice0.size() - 1);

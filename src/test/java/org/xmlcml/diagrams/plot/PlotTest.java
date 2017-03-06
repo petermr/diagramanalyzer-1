@@ -80,7 +80,6 @@ public class PlotTest {
 	@Test
 	public void testDefaultSharkPlot() throws IOException {
 		File g002 = new File(G002_DIR, "g002.png");
-		LOG.debug("img "+g002);
 		BufferedImage image = UtilImageIO.loadImage(g002.toString());
 		ImageProcessor imageProcessor = ImageProcessor
 				.createDefaultProcessorAndProcess(image);
@@ -94,7 +93,6 @@ public class PlotTest {
 				.getOrCreatePixelIslandList().size());
 		int pixels = imageProcessor.getOrCreatePixelIslandList().getPixelList()
 				.size();
-		LOG.debug("pixels "+pixels);
 	}
 
 	@Test
@@ -143,6 +141,10 @@ public class PlotTest {
 	}
 
 	@Test
+	/** this is LONG
+	 * 
+	 */
+	@Ignore // LONG
 	public void testUnthinnedSharkPlotCLI() {
 		String[] args = { "--input", new File(G002_DIR, "g002.png").toString(), // source
 																				// image
@@ -187,6 +189,10 @@ public class PlotTest {
 	}
 
 	@Test
+	/** this is LONG
+	 * 
+	 */
+	@Ignore // LONG
 	public void testUnthinnedSharkPlotWithAxesCLI() {
 		String[] args = { "--input",
 				new File(G002_DIR, "g002.png").toString(), // source image
@@ -284,7 +290,7 @@ public class PlotTest {
 				.createDefaultProcessorAndProcess(image);
 		ImageIOUtil.writeImageQuietly(imageProcessor.getImage(), new File(
 				"target/" + SHARK + "/defaultThinnedBinary.png"));
-		LOG.debug(g002);
+		LOG.trace(g002);
 		ImageUInt8 inputImage = ConvertBufferedImage.convertFrom(image,
 				(ImageUInt8) null);
 		UtilImageIO.saveImage(ConvertBufferedImage.convertTo(inputImage, null),
@@ -358,14 +364,11 @@ public class PlotTest {
 	 */
 	public void testErrorBar() throws IOException {
 		File rawfile = new File(G002_DIR, "errorbar.png");
-		LOG.debug(G002_DIR);
 		String base = FilenameUtils.getBaseName(rawfile.toString());
 		DEFAULT_IMAGE_PROCESSOR.setThinning(null);
 		DEFAULT_IMAGE_PROCESSOR.readAndProcessFile(rawfile);
 		File newfile = new File("target/" + SHARK + "/" + base + "_raw.png");
-		LOG.debug(newfile);
-		ImageUtil
-				.writeImageQuietly(DEFAULT_IMAGE_PROCESSOR.getImage(), newfile);
+		ImageIOUtil.writeImageQuietly(DEFAULT_IMAGE_PROCESSOR.getImage(), newfile);
 		PixelIslandList islandList = DEFAULT_IMAGE_PROCESSOR
 				.getOrCreatePixelIslandList();
 		ImageIOUtil.writeImageQuietly(islandList.createImageAtOrigin(), new File(
@@ -446,10 +449,8 @@ public class PlotTest {
 		outline.plotPixels(g, BLUE);
 		PixelIsland outlineIsland = PixelIsland.createSeparateIslandWithClonedPixels(outline, true);
 		PixelGraph graph = PixelGraph.createGraph(outlineIsland);
-		LOG.debug("graph "+graph.getPixelList());
 		PixelNodeList nodeList = graph.getNodeList();
 		Assert.assertEquals("nodes", 1, nodeList.size());
-		LOG.debug("nodes "+nodeList);
 		PixelEdgeList edgeList = graph.getEdgeList();
 		Assert.assertEquals("edges", 1, edgeList.size());
 		for (PixelEdge edge : edgeList) {
@@ -487,7 +488,6 @@ public class PlotTest {
 
 		SVGG g = new SVGG();
 		PixelRingList pixelRingList = islandD.getOrCreateInternalPixelRings();
-		LOG.debug("ring count: " + pixelRingList.size());
 		for (int i = 0; i < pixelRingList.size(); i++) {
 			pixelRingList.get(i).plotPixels(g, FILL[i]);
 		}
@@ -504,7 +504,6 @@ public class PlotTest {
 
 		SVGG g = new SVGG();
 		PixelRingList pixelRingList = islandD.getOrCreateInternalPixelRings();
-		LOG.debug("ring count: " + pixelRingList.size());
 		for (int i = 0; i < pixelRingList.size(); i++) {
 			pixelRingList.get(i).plotPixels(g, FILL[i]);
 		}
@@ -595,7 +594,6 @@ public class PlotTest {
 					PixelList list0 = pixelRingList.get(ring0);
 					PixelList list1 = pixelRingList.get(ring1);
 					PixelList outline = list1.getPixelsTouching(list0);
-					LOG.debug(">>"+outline);
 					PixelListFloodFill pixelListFloodFill = new PixelListFloodFill(outline);
 					pixelListFloodFill.fill();
 					PixelIslandList pixelIslandList1 = pixelListFloodFill.getIslandList();
@@ -611,7 +609,6 @@ public class PlotTest {
 		SVGG gg = new SVGG();
 		int i = 0;
 		for (PixelList outline : outlineList) {
-			LOG.debug("size "+outline.size());
 			SVGG g = new SVGG();
 			outline.plotPixels(g, FILL[i++ % FILL.length]);
 			gg.appendChild(g);
@@ -624,13 +621,11 @@ public class PlotTest {
 			Real2 centroidxy = new Real2(centroid);
 			coords.add(centroidxy);
 		}
-		LOG.debug(coords.getRange2());
 		SVGSVG svg = new SVGSVG();
 		svg.setWidth(DEFAULT_IMAGE_PROCESSOR.getBinarizedImage().getWidth());
 		svg.setHeight(DEFAULT_IMAGE_PROCESSOR.getBinarizedImage().getHeight());
 		svg.appendChild(gg);
 		XMLUtil.outputQuietly(svg, outfile, 1);
-//		SVGSVG.wrapAndWriteAsSVG(g, outfile);
 	}
 
 	@Test

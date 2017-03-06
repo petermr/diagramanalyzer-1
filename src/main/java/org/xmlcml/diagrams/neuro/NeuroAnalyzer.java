@@ -60,7 +60,7 @@ public class NeuroAnalyzer {
 			XSlice slice1 = xSliceList.get(i+1);
 			IntArray curve = new IntArray();
 			if (slice0.size() > nTraces) {
-				LOG.debug(i+"; "+slice0+"; "+slice0.get(0)+"; "+slice0.get(slice0.size() - 1));
+				LOG.trace(i+"; "+slice0+"; "+slice0.get(0)+"; "+slice0.get(slice0.size() - 1));
 			}
 			for (int j = 0; j < nTraces; j++) {
 //				IntRange range0 = (j == 0) ? slice0.get(0) : slice0.get(slice0.size() - 1);
