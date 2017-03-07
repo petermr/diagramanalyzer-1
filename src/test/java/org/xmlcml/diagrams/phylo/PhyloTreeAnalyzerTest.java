@@ -540,6 +540,7 @@ public class PhyloTreeAnalyzerTest {
 	}
 
 	@Test
+	@Ignore // file does not exist any longer
 	public void testProcessText() {
 		String root = "ijs.0.014811-0-002.pbm";
 		String[] args = {
