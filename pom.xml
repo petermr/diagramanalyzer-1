@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
     <properties>
-	    <diagramanalyzer.version>0.3.6</diagramanalyzer.version>
+	    <diagramanalyzer.version>0.4.0</diagramanalyzer.version>
 	    <!-- upstream -->
-	    <cproject.version>0.3.8</cproject.version>
-	    <imageanalysis.version>1.0.4</imageanalysis.version>
+	    <cproject.version>0.4.0</cproject.version>
+	    <imageanalysis.version>1.1.0</imageanalysis.version>
     </properties>
 
 	<groupId>org.contentmine</groupId>
@@ -15,7 +15,7 @@
 	<packaging>jar</packaging>
 	<name>Diagram Analyzer</name>
 	<description>Analysis pixel diagrams (graphs, phylotrees, etc.)</description>
-	<url>http://www.sourceforge.net/projects/diagramanalysis/</url>
+	<url>http://github.com/contentmine/diagramanalyzer/</url>
 
 	<build>
 		<plugins>
