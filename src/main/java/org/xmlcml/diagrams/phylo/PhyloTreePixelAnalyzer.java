@@ -7,8 +7,8 @@ import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.xmlcml.diagrams.DiagramAnalyzer;
-import org.xmlcml.diagrams.DiagramTree;
+import org.xmlcml.diagrams.DiagramAnalyzerOLD;
+import org.xmlcml.diagrams.DiagramTreeOLD;
 import org.xmlcml.diagrams.TreeBuilder;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.image.ArgIterator;
@@ -25,7 +25,7 @@ import org.xmlcml.image.pixel.PixelNode;
  * @author pm286
  * 
  */
-public class PhyloTreePixelAnalyzer extends DiagramAnalyzer {
+public class PhyloTreePixelAnalyzer extends DiagramAnalyzerOLD {
 
 	private final static Logger LOG = Logger.getLogger(PhyloTreePixelAnalyzer.class);
 
@@ -41,7 +41,7 @@ public class PhyloTreePixelAnalyzer extends DiagramAnalyzer {
 	private boolean computeLengths;
 	private PixelGraph selectedGraph;
 	private int selectedIslandIndex;
-	private DiagramTree diagramTree;
+	private DiagramTreeOLD diagramTree;
 
 	public PhyloTreePixelAnalyzer() {
 		setDefaults();
@@ -95,7 +95,7 @@ public class PhyloTreePixelAnalyzer extends DiagramAnalyzer {
 
 	public static void main(String[] args) /*throws Exception*/ {
 		LOG.trace("RUNNING MAIN PHYLOTREE");
-		DiagramAnalyzer phyloTree = new PhyloTreePixelAnalyzer();
+		DiagramAnalyzerOLD phyloTree = new PhyloTreePixelAnalyzer();
 		phyloTree.parseArgsAndRun(args);
 	}
 
@@ -165,7 +165,7 @@ public class PhyloTreePixelAnalyzer extends DiagramAnalyzer {
 		return true;
 	}
 
-	public DiagramTree processImageIntoGraphsAndTree() {
+	public DiagramTreeOLD processImageIntoGraphsAndTree() {
 		diagramTree = null;
 		LOG.trace("start processImage");
 		super.processImageFile();
@@ -192,7 +192,7 @@ public class PhyloTreePixelAnalyzer extends DiagramAnalyzer {
 		return diagramTree;
 	}
 	
-	public DiagramTree getDiagramTree() {
+	public DiagramTreeOLD getDiagramTree() {
 		return diagramTree;
 	}
 
@@ -237,7 +237,7 @@ public class PhyloTreePixelAnalyzer extends DiagramAnalyzer {
 		return selectedGraph;
 	}
 
-	public DiagramTree createTreeFromImageFile(File file) {
+	public DiagramTreeOLD createTreeFromImageFile(File file) {
 		// tidy this
 		BufferedImage image = imageProcessor.processImageFile(file);
 		imageProcessor.processImage(image);
@@ -248,20 +248,20 @@ public class PhyloTreePixelAnalyzer extends DiagramAnalyzer {
 		return diagramTree;
 	}
 
-	private DiagramTree createFromIsland(PixelIsland treeIsland) {
+	private DiagramTreeOLD createFromIsland(PixelIsland treeIsland) {
 		PixelGraph graph = treeIsland.getOrCreateGraph();
 		return createFromGraph(graph);
 	}
 	
-	public DiagramTree createFromGraph(PixelGraph graph) {
+	public DiagramTreeOLD createFromGraph(PixelGraph graph) {
 		return createFromGraph(graph, null);
 	}
 
-	public DiagramTree createFromGraph(PixelGraph graph, PixelNode rootPixelNode) {
+	public DiagramTreeOLD createFromGraph(PixelGraph graph, PixelNode rootPixelNode) {
 		graph.addCoordsToNodes();
 		TreeBuilder treeBuilder = new TreeBuilder(graph, rootPositionComparatorType);
 		treeBuilder.setRootPixelNode(rootPixelNode);
-		DiagramTree tree = null;
+		DiagramTreeOLD tree = null;
 		try {
 			tree = treeBuilder.createFromGraph();
 		} catch (RuntimeException e) {
@@ -276,7 +276,7 @@ public class PhyloTreePixelAnalyzer extends DiagramAnalyzer {
 		this.selectedIslandIndex = islandIndex;
 	}
 
-	public DiagramTree makeDiagramTreeFromImage(BufferedImage image) {
+	public DiagramTreeOLD makeDiagramTreeFromImage(BufferedImage image) {
 		//SVGXTree tree = new SVGXTree((SVGElement)null);
 		PhyloTreePixelAnalyzer treeAnalyzer = new PhyloTreePixelAnalyzer();
 		treeAnalyzer.setSelectedIslandIndex(0);

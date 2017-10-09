@@ -9,8 +9,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
-import org.xmlcml.diagrams.DiagramAnalyzer;
-import org.xmlcml.diagrams.Fixtures;
+import org.xmlcml.diagrams.DiagramAnalyzerOLD;
+import org.xmlcml.diagrams.DiagramsFixtures;
 import org.xmlcml.image.pixel.PixelGraph;
 
 /** class to manage examples which are too large for tests.
@@ -31,22 +31,22 @@ public class RunExamples {
 	 * 
 	 */
 	public static void main(String[] args) throws IOException {
-		runIJSEMFilesSeparately();
-//		runIJSEMFilesIteratively();
-//		runIJSEMOpen();
-//		runRoss5();
-//		runRoss5light();
-//		runRoss5darkback();
-//		runRoss3taxa();
-//      runRoss14taxa();
-//		simpleCommands();
+//		runIJSEMFilesSeparately();
+		runIJSEMFilesIteratively();
+		runIJSEMOpen();
+		runRoss5();
+		runRoss5light();
+		runRoss5darkback();
+		runRoss3taxa();
+      runRoss14taxa();
+		simpleCommands();
 	}
 
 	private static void simpleCommands() {
 		String[] argsx = {
-		"--debug", "--input", "./ijsemopen/ijs.0.014126-0-000.pbm.png", "--island", "0", "--newick", "target/ijs.0.014126-0-000.nwk" 
+		"--debug", "--input", "./src/test/resources/org/xmlcml/diagrams/ross/ijs.0.014126-0-000.pbm.png", "--island", "0", "--newick", "target/ijs.0.014126-0-000.nwk" 
 		};
-	DiagramAnalyzer phyloTree = new PhyloTreePixelAnalyzer();
+	DiagramAnalyzerOLD phyloTree = new PhyloTreePixelAnalyzer();
 	phyloTree.parseArgsAndRun(argsx);
 	}
 
@@ -67,7 +67,7 @@ public class RunExamples {
 			"--skip", "target/ijsem/${root}.nwk",
 			"--newick", "target/ijsem/${root}.nwk" // calculate newick and output
 			};
-		DiagramAnalyzer phyloTree = new PhyloTreePixelAnalyzer();
+		DiagramAnalyzerOLD phyloTree = new PhyloTreePixelAnalyzer();
 		phyloTree.parseArgsAndRun(argsx);
 	}
 	
@@ -91,7 +91,7 @@ public class RunExamples {
 				"--skip", "target/ijsemopen/${root}.nwk", // skip existing output
 				"--newick", "target/ijsemopen/${root}.nwk" // calculate newick and output
 				};
-		DiagramAnalyzer phyloTree = new PhyloTreePixelAnalyzer();
+		DiagramAnalyzerOLD phyloTree = new PhyloTreePixelAnalyzer();
 		phyloTree.parseArgsAndRun(args);
 	}
 
@@ -101,7 +101,7 @@ public class RunExamples {
 	public static void runRoss5() {
 		String[] args = {
 				"--debug",
-				"--input",  new File(Fixtures.ROSS_DIR, "/ross5trees/").toString(),  // source image
+				"--input",  new File(DiagramsFixtures.ROSS_DIR, "/ross5trees/").toString(),  // source image
 				"--logfile", "target/ross5/all.log", 
 				"--extensions", "png",
 				"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
@@ -114,7 +114,7 @@ public class RunExamples {
 				"--tolerance", "3.0",
 				"--newick", "target/ross5/${root}.nwk" // calculate newick and output
 				};
-		DiagramAnalyzer phyloTree = new PhyloTreePixelAnalyzer();
+		DiagramAnalyzerOLD phyloTree = new PhyloTreePixelAnalyzer();
 		phyloTree.parseArgsAndRun(args);
 	}
 
@@ -126,7 +126,7 @@ public class RunExamples {
 	public static void runRoss5darkback() {
 		String[] args = {
 				"--debug",
-				"--input",  new File(Fixtures.ROSS_DIR, "/ross5trees/tree1alt.png").toString(),  // source image
+				"--input",  new File(DiagramsFixtures.ROSS_DIR, "/ross5trees/tree1alt.png").toString(),  // source image
 				"--logfile", "target/ross5/all.log", 
 				"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
 				"--root", "left",
@@ -138,7 +138,7 @@ public class RunExamples {
 				"--threshold", "5", // background
 				"--newick", "target/ross5/tree1alt.nwk" // calculate newick and output
 				};
-		DiagramAnalyzer phyloTree = new PhyloTreePixelAnalyzer();
+		DiagramAnalyzerOLD phyloTree = new PhyloTreePixelAnalyzer();
 		phyloTree.parseArgsAndRun(args);
 	}
 
@@ -148,7 +148,7 @@ public class RunExamples {
 	public static void runRoss5light() {
 		String[] args = {
 				"--debug",
-				"--input",  new File(Fixtures.ROSS_DIR, "/ross5trees/S16117.png").toString(),  // source image
+				"--input",  new File(DiagramsFixtures.ROSS_DIR, "/ross5trees/S16117.png").toString(),  // source image
 				"--logfile", "target/ross5/all.log", 
 				"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
 				"--root", "left",
@@ -160,7 +160,7 @@ public class RunExamples {
 				"--threshold", "230", // very light lines
 				"--newick", "target/ross5/S16117.nwk" // calculate newick and output
 				};
-		DiagramAnalyzer phyloTree = new PhyloTreePixelAnalyzer();
+		DiagramAnalyzerOLD phyloTree = new PhyloTreePixelAnalyzer();
 		phyloTree.parseArgsAndRun(args);
 	}
 
@@ -170,7 +170,7 @@ public class RunExamples {
 	public static void runRoss3taxa() {
 		String[] args = {
 				"--debug",
-				"--input",  new File(Fixtures.ROSS_DIR, "/ross5trees/root3taxa.png").toString(),  // source image
+				"--input",  new File(DiagramsFixtures.ROSS_DIR, "/ross5trees/root3taxa.png").toString(),  // source image
 				"--logfile", "target/ross5/all.log", 
 				"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
 				"--root", "left",
@@ -195,7 +195,7 @@ public class RunExamples {
 	public static void runRoss14taxa() {
 		String[] args = {
 				"--debug",
-				"--input",  new File(Fixtures.ROSS_DIR, "/ross5trees/root14taxatree.png").toString(),  // source image
+				"--input",  new File(DiagramsFixtures.ROSS_DIR, "/ross5trees/root14taxatree.png").toString(),  // source image
 				"--logfile", "target/ross5/all.log", 
 				"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
 				"--root", "left",
@@ -206,7 +206,7 @@ public class RunExamples {
 				"--lengths",
 				"--newick", "target/ross5/14taxatree.nwk" // calculate newick and output
 				};
-		DiagramAnalyzer phyloTree = new PhyloTreePixelAnalyzer();
+		DiagramAnalyzerOLD phyloTree = new PhyloTreePixelAnalyzer();
 		phyloTree.parseArgsAndRun(args);
 //		Element element = phyloTree.createXML(pixelGraph);
 //		phyloTree.createNewick(pixelGraph);
@@ -229,7 +229,7 @@ public class RunExamples {
 					"--tolerance", "5.0",
 					"--newick", "target/ijsem/"+root+"_test.nwk" // calculate newick and output
 					};
-			DiagramAnalyzer phyloTree = new PhyloTreePixelAnalyzer();
+			DiagramAnalyzerOLD phyloTree = new PhyloTreePixelAnalyzer();
 			phyloTree.parseArgsAndRun(argsx);
 		}
 	}

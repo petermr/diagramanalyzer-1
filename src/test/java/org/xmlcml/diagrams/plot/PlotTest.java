@@ -11,8 +11,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.diagrams.DiagramAnalyzer;
-import org.xmlcml.diagrams.Fixtures;
+import org.xmlcml.diagrams.DiagramAnalyzerOLD;
+import org.xmlcml.diagrams.DiagramsFixtures;
 import org.xmlcml.euclid.Int2;
 import org.xmlcml.euclid.Int2Range;
 import org.xmlcml.euclid.Real2;
@@ -21,7 +21,6 @@ import org.xmlcml.graphics.image.ImageIOUtil;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.image.ImageProcessor;
-import org.xmlcml.image.ImageUtil;
 import org.xmlcml.image.pixel.PixelEdge;
 import org.xmlcml.image.pixel.PixelEdgeList;
 import org.xmlcml.image.pixel.PixelGraph;
@@ -48,11 +47,11 @@ public class PlotTest {
 	private final static Logger LOG = Logger.getLogger(PlotTest.class);
 
 	private final static String SHARK = "0095565.g002";
-	private final static File G002_DIR = new File(Fixtures.COMPOUND_DIR,
+	private final static File G002_DIR = new File(DiagramsFixtures.COMPOUND_DIR,
 			"journal.pone." + SHARK);
 	public static ImageProcessor DEFAULT_IMAGE_PROCESSOR = null;
 	private File PLOT_OUT_DIR;
-	private File CCJ_DIR = new File(Fixtures.DIAGRAMS_DIR, "ccj");
+	private File CCJ_DIR = new File(DiagramsFixtures.DIAGRAMS_DIR, "ccj");
 
 	public final static String[] FILL = new String[] { "orange", "green",
 			BLUE, "red", CYAN };
@@ -99,7 +98,7 @@ public class PlotTest {
 	public void testDefaultSharkPlotCLI() {
 		String[] args = { "--input", new File(G002_DIR, "g002.png").toString(), 
 				"--output", new File("target/" + SHARK + "/").toString(), };
-		DiagramAnalyzer plotAnalyzer = new PlotAnalyzer();
+		DiagramAnalyzerOLD plotAnalyzer = new PlotAnalyzerOLD();
 		plotAnalyzer.parseArgsAndRun(args);
 		Assert.assertEquals("pixels", 89, plotAnalyzer
 				.getOrCreatePixelIslandList().size());
@@ -150,7 +149,7 @@ public class PlotTest {
 																				// image
 				"--thinning", "none", // otherwise removes point
 				"--output", new File("target/" + SHARK + "/").toString(), };
-		DiagramAnalyzer plotAnalyzer = new PlotAnalyzer();
+		DiagramAnalyzerOLD plotAnalyzer = new PlotAnalyzerOLD();
 		plotAnalyzer.parseArgsAndRun(args);
 		ImageIOUtil.writeImageQuietly(plotAnalyzer.getImage(), new File("target/"
 				+ SHARK + "/defaultUnthinnedCLI.png"));
@@ -200,7 +199,7 @@ public class PlotTest {
 				"none", // otherwise removes point
 				"--threshold", "180", "--output",
 				new File("target/" + SHARK + "/").toString(), };
-		DiagramAnalyzer plotAnalyzer = new PlotAnalyzer();
+		DiagramAnalyzerOLD plotAnalyzer = new PlotAnalyzerOLD();
 		plotAnalyzer.parseArgsAndRun(args);
 		ImageIOUtil.writeImageQuietly(plotAnalyzer.getImage(), new File("target/"
 				+ SHARK + "/defaultUnthinnedWithAxesCLI.png"));
@@ -224,7 +223,7 @@ public class PlotTest {
 				new File(G002_DIR, "g002.png").toString(), // source image
 				"--thinning", "z", "--threshold", "180", "--output",
 				new File("target/" + SHARK + "/").toString(), };
-		DiagramAnalyzer plotAnalyzer = new PlotAnalyzer();
+		DiagramAnalyzerOLD plotAnalyzer = new PlotAnalyzerOLD();
 		plotAnalyzer.parseArgsAndRun(args);
 		ImageIOUtil.writeImageQuietly(plotAnalyzer.getImage(), new File("target/"
 				+ SHARK + "/defaultThinnedWithAxesCLI.png"));
@@ -247,7 +246,7 @@ public class PlotTest {
 				new File(G002_DIR, "g002.png").toString(), // source image
 				"--thinning", "z", "--threshold", "180", "--output",
 				new File("target/" + SHARK + "/").toString(), };
-		DiagramAnalyzer plotAnalyzer = new PlotAnalyzer();
+		DiagramAnalyzerOLD plotAnalyzer = new PlotAnalyzerOLD();
 		plotAnalyzer.parseArgsAndRun(args);
 		PixelIslandList pil = plotAnalyzer.getOrCreatePixelIslandList();
 		pil.sortBySizeDescending();
@@ -567,7 +566,7 @@ public class PlotTest {
 //		outfile = new File("target/" + "0095794.g009" + "/plotLineAllPoints12a.svg");
 //		extractPointsAndPlot(infile, outfile, 2, 180, 5);
 		
-		infile = new File(Fixtures.DIAGRAMS_DIR, "plot/rscopen/JV_6.gif");
+		infile = new File(DiagramsFixtures.DIAGRAMS_DIR, "plot/rscopen/JV_6.gif");
 		new File("target/" + "image1").mkdirs();
 		outfile = new File("target/" + "image1" + "/plotLineAllPoints12a.svg");
 //		extractPointsAndPlot(infile, outfile, 0, 230, 23);
@@ -721,7 +720,7 @@ public class PlotTest {
 	// this one is very weak
 	@Ignore
 	public void test0095375() throws IOException {
-		plotRingsAndThin(new File(Fixtures.COMPOUND_DIR,
+		plotRingsAndThin(new File(DiagramsFixtures.COMPOUND_DIR,
 				"journal.pone.0095375.g003.png"), new File(
 				"target/plot/0093575.svg"), new File(
 				"target/plot/0093575_2.svg"));
@@ -731,7 +730,7 @@ public class PlotTest {
 	@Ignore
 	// out of memory (chop up diagram?
 	public void test0095807ManySubDiagrams() throws IOException {
-		plotRingsAndThin(new File(Fixtures.COMPOUND_DIR,
+		plotRingsAndThin(new File(DiagramsFixtures.COMPOUND_DIR,
 				"journal.pone.0095807.g003.png"), new File(
 				"target/plot/0095807.svg"), new File(
 				"target/plot/0095807_2.svg"));
@@ -739,7 +738,7 @@ public class PlotTest {
 
 	@Test
 	public void test0095816MultiColourAndSuperscripts() throws IOException {
-		plotRingsAndThin(new File(Fixtures.COMPOUND_DIR,
+		plotRingsAndThin(new File(DiagramsFixtures.COMPOUND_DIR,
 				"journal.pone.0095816.g002.png"), new File(
 				"target/plot/0095816.svg"), new File(
 				"target/plot/0095816_2.svg"));
@@ -747,7 +746,7 @@ public class PlotTest {
 
 	@Test
 	public void test004179BarChart() throws IOException {
-		plotRingsAndThin(new File(Fixtures.COMPOUND_DIR,
+		plotRingsAndThin(new File(DiagramsFixtures.COMPOUND_DIR,
 				"journal.pone.0094179.g008.png"), new File(
 				"target/plot/0094179_8.svg"), new File(
 				"target/plot/0094179_8_2.svg"));
@@ -755,7 +754,7 @@ public class PlotTest {
 
 	@Test
 	public void test004179CirclePlots() throws IOException {
-		plotRingsAndThin(new File(Fixtures.COMPOUND_DIR,
+		plotRingsAndThin(new File(DiagramsFixtures.COMPOUND_DIR,
 				"journal.pone.0094179.g002.png"), new File(
 				"target/plot/0094179_2.svg"), new File(
 				"target/plot/0094179_2_2.svg"));
@@ -766,7 +765,7 @@ public class PlotTest {
 	// the resultant tree is not connected. Why? and binarization give a single
 	// pixelisland??
 	public void test004172Phylo() throws IOException {
-		plotRingsAndThin(new File(Fixtures.COMPOUND_DIR,
+		plotRingsAndThin(new File(DiagramsFixtures.COMPOUND_DIR,
 				"journal.pone.0094172.g002-2.png"), new File(
 				"target/plot/0094172_2.svg"), new File(
 				"target/plot/0094172_2_2.svg"));
@@ -776,7 +775,7 @@ public class PlotTest {
 	@Ignore
 	// file not transferred
 	public void test004172PhyloA() throws IOException {
-		plotRingsAndThin(new File(Fixtures.COMPOUND_DIR,
+		plotRingsAndThin(new File(DiagramsFixtures.COMPOUND_DIR,
 				"journal.pone.0094172.g002-2a.png"), new File(
 				"target/plot/0094172_2a.svg"), new File(
 				"target/plot/0094172_2a_2.svg"));
@@ -790,7 +789,7 @@ public class PlotTest {
 				"--island", "0", // take the largest island (no magic, if not
 									// the first you have to work out which)
 				"--output", "target/0055965_002" };
-		DiagramAnalyzer plotAnalyzer = new PlotAnalyzer();
+		DiagramAnalyzerOLD plotAnalyzer = new PlotAnalyzerOLD();
 		plotAnalyzer.parseArgsAndRun(args);
 	}
 
@@ -804,7 +803,7 @@ public class PlotTest {
 				"--island", "0", // take the largest island (no magic, if not
 									// the first you have to work out which)
 				"--output", "target/ccj/1752-153X-7-29-7-l.svg" };
-		DiagramAnalyzer plotAnalyzer = new PlotAnalyzer();
+		DiagramAnalyzerOLD plotAnalyzer = new PlotAnalyzerOLD();
 		plotAnalyzer.parseArgsAndRun(args);
 	}
 
@@ -819,7 +818,7 @@ public class PlotTest {
 				"--island", "0", // take the largest island (no magic, if not
 									// the first you have to work out which)
 				"--output", "target/ccj/1752-153X-7-107-3-l.svg" };
-		DiagramAnalyzer plotAnalyzer = new PlotAnalyzer();
+		DiagramAnalyzerOLD plotAnalyzer = new PlotAnalyzerOLD();
 		plotAnalyzer.parseArgsAndRun(args);
 	}
 

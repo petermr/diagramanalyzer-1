@@ -15,10 +15,10 @@ import org.xmlcml.image.pixel.PixelNode;
  * @author pm286
  *
  */
-public class DiagramTree {
+public class DiagramTreeOLD {
 
 
-	private static final Logger LOG = Logger.getLogger(DiagramTree.class);
+	private static final Logger LOG = Logger.getLogger(DiagramTreeOLD.class);
 	
 	private static final int OFFSET = 20;
 	static final String _ROOT = "_root";
@@ -29,10 +29,10 @@ public class DiagramTree {
 	Double maxDist;
 	int decimalPlaces = 2;
 	private PixelNode rootPixelNode;
-	public XMLNode rootXMLNode;
+	public XMLNodeOLD rootXMLNode;
 
 	
-	public DiagramTree() {
+	public DiagramTreeOLD() {
 	}
 
 
@@ -69,7 +69,7 @@ public class DiagramTree {
 		this.graph = pixelGraph;
 	}
 
-	public XMLNode getRootXMLNode() {
+	public XMLNodeOLD getRootXMLNode() {
 		return rootXMLNode;
 	}
 
@@ -77,16 +77,16 @@ public class DiagramTree {
 		return graph;
 	}
 
-	public XMLNode createXMLNode() {
-		return new XMLNode(this);
+	public XMLNodeOLD createXMLNode() {
+		return new XMLNodeOLD(this);
 	}
 	
-	public XMLNode createXMLNode(String label) {
-		return new XMLNode(this, label);
+	public XMLNodeOLD createXMLNode(String label) {
+		return new XMLNodeOLD(this, label);
 	}
 	
-	public XMLNode createXMLNode(String label, Real2 xy2) {
-		XMLNode node = new XMLNode(this, label);
+	public XMLNodeOLD createXMLNode(String label, Real2 xy2) {
+		XMLNodeOLD node = new XMLNodeOLD(this, label);
 		node.setXY2(xy2);
 		return node;
 	}
@@ -100,18 +100,19 @@ public class DiagramTree {
 		} else if (ComparatorType.VERTICAL.equals(outputDistances)) {
 			maxDist = boundingBox.getYRange().getRange();
 		} else {
-			maxDist = boundingBox.getCorners()[0].getDistance(boundingBox.getCorners()[1]);
+			// FIXME check rename worked
+			maxDist = boundingBox.getLLURCorners()[0].getDistance(boundingBox.getLLURCorners()[1]);
 		}
 		return boundingBox;
 	}
 
-	private void addDescendantBoundingBoxes(XMLNode xmlNode) {
-		String xy2S = xmlNode.getAttributeValue(XMLNode.XY2);
+	private void addDescendantBoundingBoxes(XMLNodeOLD xmlNode) {
+		String xy2S = xmlNode.getAttributeValue(XMLNodeOLD.XY2);
 		boundingBox.add(Real2.createFromString(xy2S));
 		for (int i = 0; i < xmlNode.getChildElements().size(); i++) {
 			Element child = xmlNode.getChildElements().get(i);
-			if (child instanceof XMLNode) {
-				addDescendantBoundingBoxes((XMLNode) child);
+			if (child instanceof XMLNodeOLD) {
+				addDescendantBoundingBoxes((XMLNodeOLD) child);
 			}
 		}
 	}
@@ -146,20 +147,20 @@ public class DiagramTree {
 //		return sb.toString();
 //	}
 //
-	public XMLNode createAndAddXMLNode(XMLNode parent) {
+	public XMLNodeOLD createAndAddXMLNode(XMLNodeOLD parent) {
 		return createAndAddXMLNode(parent, null, null);
 	}
 
-	public XMLNode createAndAddXMLNode(XMLNode parent, Real2 xy2) {
+	public XMLNodeOLD createAndAddXMLNode(XMLNodeOLD parent, Real2 xy2) {
 		return createAndAddXMLNode(parent, null, xy2);
 	}
 
-	public XMLNode createAndAddXMLNode(XMLNode parent, String label) {
+	public XMLNodeOLD createAndAddXMLNode(XMLNodeOLD parent, String label) {
 		return createAndAddXMLNode(parent, label, null);
 	}
 
-	public XMLNode createAndAddXMLNode(XMLNode parent, String label, Real2 xy2) {
-		XMLNode node = null;
+	public XMLNodeOLD createAndAddXMLNode(XMLNodeOLD parent, String label, Real2 xy2) {
+		XMLNodeOLD node = null;
 		if (parent != null) {
 			node = createXMLNode(label, xy2);
 			parent.appendChild(node);

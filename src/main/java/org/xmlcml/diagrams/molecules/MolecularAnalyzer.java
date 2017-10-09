@@ -3,21 +3,19 @@ package org.xmlcml.diagrams.molecules;
 import java.io.File;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.diagrams.DiagramAnalyzer;
+import org.xmlcml.diagrams.DiagramAnalyzerOLD;
 
-public class MolecularAnalyzer extends DiagramAnalyzer {
+public class MolecularAnalyzer extends DiagramAnalyzerOLD {
 	
 	private final static Logger LOG = Logger.getLogger(MolecularAnalyzer.class);
 
 	public MolecularAnalyzer() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public void makeMolecule(File inputFile) {
-		this.setInputFile(inputFile);
-		this.processGraphList();
+		getOrCreateGraphList(inputFile);
 	}
-	
+
 	public static void main(String[] args) {
 		if (args.length > 0) {
 			MolecularAnalyzer molecularAnalyzer = new MolecularAnalyzer();

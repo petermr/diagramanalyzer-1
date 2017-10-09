@@ -12,8 +12,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.diagrams.DiagramAnalyzer;
-import org.xmlcml.diagrams.Fixtures;
+import org.xmlcml.diagrams.DiagramAnalyzerOLD;
+import org.xmlcml.diagrams.DiagramsFixtures;
 import org.xmlcml.euclid.Int2Range;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.image.ImageIOUtil;
@@ -44,14 +44,14 @@ public class PhyloTreeAnalyzerTest {
 
 	@Test
 	public void testImageProcessor() {
-		DiagramAnalyzer phyloTree = new PhyloTreePixelAnalyzer();
-		phyloTree.readAndProcessInputFile(new File(Fixtures.ROSS_DIR, "pone.0016923.g002.png"));
+		DiagramAnalyzerOLD phyloTree = new PhyloTreePixelAnalyzer();
+		phyloTree.readAndProcessInputFile(new File(DiagramsFixtures.ROSS_DIR, "pone.0016923.g002.png"));
 	}
 	
 	@Test
 	public void test16923Read() throws IOException {
-		Assert.assertTrue(Fixtures.ROSS_DIR.exists());
-		BufferedImage image = ImageIO.read(new File(Fixtures.ROSS_DIR,
+		Assert.assertTrue(DiagramsFixtures.ROSS_DIR.exists());
+		BufferedImage image = ImageIO.read(new File(DiagramsFixtures.ROSS_DIR,
 				"pone.0016923.g002.png"));
 		PixelIslandList pixelIslandList = ImageProcessor.createDefaultProcessorAndProcess(image).getOrCreatePixelIslandList();
 		pixelIslandList.sortBySizeDescending();
@@ -71,7 +71,7 @@ public class PhyloTreeAnalyzerTest {
 	 * 
 	 */
 	public void test16923GraphsAndText() throws IOException {
-		File inputFile = new File(Fixtures.ROSS_DIR, "pone.0016923.g002.png");
+		File inputFile = new File(DiagramsFixtures.ROSS_DIR, "pone.0016923.g002.png");
 		LOG.debug("processing...: ");
 		BufferedImage image = DEFAULT_IMAGE_PROCESSOR.processImageFile(inputFile);
 		PixelIslandList pixelIslandList = ImageProcessor.createDefaultProcessorAndProcess(image).getOrCreatePixelIslandList();
@@ -103,13 +103,13 @@ public class PhyloTreeAnalyzerTest {
 
 	@Test
 	public void test16124GraphsAndText() throws IOException {
-		createGraphsCharsAndPlot(Fixtures.ROSS_DIR, "pone.", "0016124.g011", 2, 128);
+		createGraphsCharsAndPlot(DiagramsFixtures.ROSS_DIR, "pone.", "0016124.g011", 2, 128);
 	}
 
 	@Test
 	// sanserif AND serif //fairly sensitive threshold
 	public void test16124GraphsAndTextThreshold() throws IOException {
-		createGraphsCharsAndPlot(Fixtures.ROSS_DIR, "pone.", "0016124.g011", 2,
+		createGraphsCharsAndPlot(DiagramsFixtures.ROSS_DIR, "pone.", "0016124.g011", 2,
 				180 /* 220 */);
 	}
 
@@ -119,7 +119,7 @@ public class PhyloTreeAnalyzerTest {
 	@Ignore // too long
 	public void testBoofCVBinarization() throws Exception {
 		for (int threshold = 64; threshold < 256; threshold += 64) {
-			for (File file : Fixtures.ROSS_DIR.listFiles()) {
+			for (File file : DiagramsFixtures.ROSS_DIR.listFiles()) {
 				String filename = file.getName();
 				if (FilenameUtils.getExtension(filename).equals("png")) {
 					String base = FilenameUtils.getBaseName(filename);
@@ -151,7 +151,7 @@ public class PhyloTreeAnalyzerTest {
 	 * @throws Exception
 	 */
 	public void test36933SegmentsCheckThinning() throws Exception {
-		BufferedImage image = ImageIO.read(new File(Fixtures.ROSS_DIR, "pone.0036933.g001.png"));
+		BufferedImage image = ImageIO.read(new File(DiagramsFixtures.ROSS_DIR, "pone.0036933.g001.png"));
 		image = DEFAULT_IMAGE_PROCESSOR.processImage(image);
 		ImageIOUtil.writeImageQuietly(image, new File("target/phylo/0036933.g001/thinned1.png"));
 		PixelIslandList islandList = PixelIslandList.createSuperThinnedPixelIslandList(image);
@@ -187,7 +187,7 @@ public class PhyloTreeAnalyzerTest {
 		NWK36933_FILE.delete();
 		String[] args = {
 				"--debug",
-				"--input",   new File(Fixtures.ROSS_DIR, "pone.0036933.g001.png").toString(),  // source image
+				"--input",   new File(DiagramsFixtures.ROSS_DIR, "pone.0036933.g001.png").toString(),  // source image
 				"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
 				"--output", "target/phylo/36933/", // output directory (maybe not needed)
 				"--newick", NWK36933 // calculate newick and output
@@ -216,7 +216,7 @@ public class PhyloTreeAnalyzerTest {
 	public void testGetNewick16923() {
 		String[] args = {
 				"--debug",
-				"--input",   new File(Fixtures.ROSS_DIR, "pone.0016923.g002.png").toString(),   // source image
+				"--input",   new File(DiagramsFixtures.ROSS_DIR, "pone.0016923.g002.png").toString(),   // source image
 				"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
 				"--root", "left",
 				"--newick", "target/phylo/0016923/test.nwk" // calculate newick and output
@@ -232,7 +232,7 @@ public class PhyloTreeAnalyzerTest {
 	public void testSVG16923() {
 		String[] args = {
 				"--debug",
-				"--input",   new File(Fixtures.ROSS_DIR, "pone.0016923.g002.png").toString(),  // source image
+				"--input",   new File(DiagramsFixtures.ROSS_DIR, "pone.0016923.g002.png").toString(),  // source image
 				"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
 				"--root", "left",
 				"--svgfile", "target/phylo/0016923/test.svg", 
@@ -259,7 +259,7 @@ public class PhyloTreeAnalyzerTest {
 	public void testGetNewick94172() {
 		String[] args = {
 				"--debug",
-				"--input",   new File(Fixtures.COMPOUND_DIR, "journal.pone.0094172.g002-2.png").toString(),  // source image
+				"--input",   new File(DiagramsFixtures.COMPOUND_DIR, "journal.pone.0094172.g002-2.png").toString(),  // source image
 				"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
 				"--root", "left",
 				"--svgfile", "target/phylo/0094172/test.svg",
@@ -278,7 +278,7 @@ public class PhyloTreeAnalyzerTest {
 	public void testGetDistances() {
 		String[] args = {
 				"--debug",
-				"--input",   new File(Fixtures.MISC_DIR, "small1.png").toString(),  // source image
+				"--input",   new File(DiagramsFixtures.MISC_DIR, "small1.png").toString(),  // source image
 				"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
 				"--root", "left",
 				"--lengths",
@@ -303,7 +303,7 @@ public class PhyloTreeAnalyzerTest {
 	public void testGetNewick94172Distances() {
 		String[] args = {
 				"--debug", 
-				"--input",   new File(Fixtures.COMPOUND_DIR, "journal.pone.0094172.g002-2.png").toString(),  // source image
+				"--input",   new File(DiagramsFixtures.COMPOUND_DIR, "journal.pone.0094172.g002-2.png").toString(),  // source image
 				"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
 				"--root", "left",
 				"--lengths",
@@ -323,7 +323,7 @@ public class PhyloTreeAnalyzerTest {
 	public void testGetNewick17932Distances() {
 		String[] args = {
 				"--debug", 
-				"--input",   new File(Fixtures.ROSS_DIR, "pone.0017932.g052.png").toString(),  // source image
+				"--input",   new File(DiagramsFixtures.ROSS_DIR, "pone.0017932.g052.png").toString(),  // source image
 				"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
 				"--root", "left",
 				"--lengths",
@@ -345,7 +345,7 @@ public class PhyloTreeAnalyzerTest {
 	public void testGetNewickIJSEM174() {
 		String[] args = {
 //				"--debug 
-				"--input",   new File(Fixtures.ROSS_DIR, "ijs.0.000174-0-000.pbm.png").toString(),  // source image
+				"--input",   new File(DiagramsFixtures.ROSS_DIR, "ijs.0.000174-0-000.pbm.png").toString(),  // source image
 				"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
 				"--root", "left",
 				"--lengths",
@@ -366,7 +366,7 @@ public class PhyloTreeAnalyzerTest {
 	public void testGetCrustacean() {
 		String[] args = {
 				"--debug", 
-				"--input",   new File(Fixtures.ROSS_DIR, "out-001.jpg").toString(),  // source image
+				"--input",   new File(DiagramsFixtures.ROSS_DIR, "out-001.jpg").toString(),  // source image
 				"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
 				"--root", "left",
 				"--lengths",
@@ -463,7 +463,7 @@ public class PhyloTreeAnalyzerTest {
 	public void testLengths() throws IOException {
 		String[] args = {
 //					"--debug 
-				"--input", new File(Fixtures.ROSS_DIR, "6taxabalance.png").toString(),
+				"--input", new File(DiagramsFixtures.ROSS_DIR, "6taxabalance.png").toString(),
 				"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
 				"--root", "left",
 				"--lengths",
@@ -489,7 +489,7 @@ public class PhyloTreeAnalyzerTest {
 		// one zerolength tip
 			String[] args = {
 					"--debug",
-					"--input",   new File(Fixtures.PROBLEM_DIR, "ijs.0.000620-0-002.pbm.png").toString(),  // source image
+					"--input",   new File(DiagramsFixtures.PROBLEM_DIR, "ijs.0.000620-0-002.pbm.png").toString(),  // source image
 					"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
 					"--root", "left",
 					"--lengths",
@@ -497,7 +497,7 @@ public class PhyloTreeAnalyzerTest {
 					"--svgfile", "target/phylo/000620-0-002/test.svg",
 					"--newick", "target/phylo/000620-0-002/test.nwk" // calculate newick and output
 					};
-			DiagramAnalyzer phyloTree = new PhyloTreePixelAnalyzer();
+			DiagramAnalyzerOLD phyloTree = new PhyloTreePixelAnalyzer();
 			phyloTree.parseArgsAndRun(args);
 
 	}
@@ -507,7 +507,7 @@ public class PhyloTreeAnalyzerTest {
 		// BUG IN NEWICK - // FIXME
 			String[] args = {
 					"--debug",
-					"--input",   new File(Fixtures.PROBLEM_DIR, "ijs.0.000737-0-001.pbm.png").toString(),  // source image
+					"--input",   new File(DiagramsFixtures.PROBLEM_DIR, "ijs.0.000737-0-001.pbm.png").toString(),  // source image
 //					"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
 					"--root", "left",
 					"--lengths",
@@ -526,7 +526,7 @@ public class PhyloTreeAnalyzerTest {
 		String BASE = "000802-0-002";
 			String[] args = {
 					"--debug",
-					"--input",   new File(Fixtures.PROBLEM_DIR, "ijs.0."+BASE+".pbm.png").toString(),  // source image
+					"--input",   new File(DiagramsFixtures.PROBLEM_DIR, "ijs.0."+BASE+".pbm.png").toString(),  // source image
 					"--island", "0", // take the largest island (no magic, if not the first you have to work out which)
 					"--root", "left",
 					"--lengths",
@@ -636,7 +636,7 @@ public class PhyloTreeAnalyzerTest {
 					// skipping this
 //					result = interpreter.scanBufferedImage(image0, null);
 				}
-				SVGText text = new SVGText(bbox.getCorners()[0], result);
+				SVGText text = new SVGText(bbox.getLLURCorners()[0], result);
 				text.setFontSize(40.);
 				g.appendChild(text);
 			} catch (Exception e) {

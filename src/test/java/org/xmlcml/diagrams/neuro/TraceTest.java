@@ -10,7 +10,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
-import org.xmlcml.diagrams.Fixtures;
+import org.xmlcml.diagrams.DiagramsFixtures;
 import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.Real2;
@@ -33,7 +33,7 @@ public class TraceTest {
 	
 	@Test
 	public void testJNeuro1Png() throws Exception{
-		File trace = new File(Fixtures.DIAGRAMS_DIR, "neuro/jphysiol_80_3_1042.png");
+		File trace = new File(DiagramsFixtures.DIAGRAMS_DIR, "neuro/jphysiol_80_3_1042.png");
 		Assert.assertTrue("trace file exists", trace.exists());
 		BufferedImage image = UtilImageIO.loadImage(trace.toString());
 		Assert.assertNotNull("image not null", image);

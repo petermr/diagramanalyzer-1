@@ -9,7 +9,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
-import org.xmlcml.diagrams.Fixtures;
+import org.xmlcml.diagrams.DiagramsFixtures;
 import org.xmlcml.graphics.image.ImageIOUtil;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.image.ImageUtil;
@@ -24,7 +24,7 @@ public class NeuroAnalyzerTest {
 	@Test
 	public void testJNeuro1Png() throws Exception{
 		NeuroAnalyzer neuroAnalyzer = new NeuroAnalyzer();
-		File trace = new File(Fixtures.DIAGRAMS_DIR, "neuro/1042/raw.png");
+		File trace = new File(DiagramsFixtures.DIAGRAMS_DIR, "neuro/1042/raw.png");
 		neuroAnalyzer.setTraceImage(trace);
 		int nTraces = 2;
 		neuroAnalyzer.createSliceList(nTraces);
@@ -40,7 +40,7 @@ public class NeuroAnalyzerTest {
 	@Test
 	public void testJNeuro1621Png() throws Exception{
 		NeuroAnalyzer neuroAnalyzer = new NeuroAnalyzer();
-		File trace = new File(Fixtures.DIAGRAMS_DIR, "neuro/1621/raw.png");
+		File trace = new File(DiagramsFixtures.DIAGRAMS_DIR, "neuro/1621/raw.png");
 		neuroAnalyzer.setTraceImage(trace);
 		int nTraces = 2;
 		neuroAnalyzer.createSliceList(nTraces);
@@ -55,19 +55,19 @@ public class NeuroAnalyzerTest {
 	@Test
 	public void testChen2005Png() throws Exception{
 		int nTraces = 1;
-		runExtraction(nTraces, new File(Fixtures.DIAGRAMS_DIR, "neuro/chen2005/2Aa/raw.png"), new File("target/neuro/chen2005/2Aa/"));
-		runExtraction(nTraces, new File(Fixtures.DIAGRAMS_DIR, "neuro/chen2005/2Ab/raw.png"), new File("target/neuro/chen2005/2Ab/"));
-		runExtraction(nTraces, new File(Fixtures.DIAGRAMS_DIR, "neuro/chen2005/2Ac/raw.png"), new File("target/neuro/chen2005/2Ac/"));
-		runExtraction(nTraces, new File(Fixtures.DIAGRAMS_DIR, "neuro/chen2005/2Ad/raw.png"), new File("target/neuro/chen2005/2Ad/"));
+		runExtraction(nTraces, new File(DiagramsFixtures.DIAGRAMS_DIR, "neuro/chen2005/2Aa/raw.png"), new File("target/neuro/chen2005/2Aa/"));
+		runExtraction(nTraces, new File(DiagramsFixtures.DIAGRAMS_DIR, "neuro/chen2005/2Ab/raw.png"), new File("target/neuro/chen2005/2Ab/"));
+		runExtraction(nTraces, new File(DiagramsFixtures.DIAGRAMS_DIR, "neuro/chen2005/2Ac/raw.png"), new File("target/neuro/chen2005/2Ac/"));
+		runExtraction(nTraces, new File(DiagramsFixtures.DIAGRAMS_DIR, "neuro/chen2005/2Ad/raw.png"), new File("target/neuro/chen2005/2Ad/"));
 	}
 
 	@Test
 	public void test9704Png() throws Exception{
 		int nTraces = 1;
-		runExtraction(nTraces, new File(Fixtures.DIAGRAMS_DIR, "neuro/9704/8Aa/raw.png"), new File("target/neuro/9704/8Aa/"));
-		runExtraction(nTraces, new File(Fixtures.DIAGRAMS_DIR, "neuro/9704/8Ab/raw.png"), new File("target/neuro/9704/8Ab/"));
-		runExtraction(nTraces, new File(Fixtures.DIAGRAMS_DIR, "neuro/9704/8Ba/raw.png"), new File("target/neuro/9704/8Ba/"));
-		runExtraction(nTraces, new File(Fixtures.DIAGRAMS_DIR, "neuro/9704/8Bb/raw.png"), new File("target/neuro/9704/8Bb/"));
+		runExtraction(nTraces, new File(DiagramsFixtures.DIAGRAMS_DIR, "neuro/9704/8Aa/raw.png"), new File("target/neuro/9704/8Aa/"));
+		runExtraction(nTraces, new File(DiagramsFixtures.DIAGRAMS_DIR, "neuro/9704/8Ab/raw.png"), new File("target/neuro/9704/8Ab/"));
+		runExtraction(nTraces, new File(DiagramsFixtures.DIAGRAMS_DIR, "neuro/9704/8Ba/raw.png"), new File("target/neuro/9704/8Ba/"));
+		runExtraction(nTraces, new File(DiagramsFixtures.DIAGRAMS_DIR, "neuro/9704/8Bb/raw.png"), new File("target/neuro/9704/8Bb/"));
 	}
 
 

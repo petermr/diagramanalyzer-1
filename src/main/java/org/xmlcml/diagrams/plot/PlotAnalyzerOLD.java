@@ -1,25 +1,25 @@
 package org.xmlcml.diagrams.plot;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.diagrams.DiagramAnalyzer;
-import org.xmlcml.diagrams.phylo.PhyloTreePixelAnalyzer;
+import org.xmlcml.diagrams.DiagramAnalyzerOLD;
 import org.xmlcml.image.ArgIterator;
 import org.xmlcml.image.ImageProcessor;
 import org.xmlcml.image.pixel.PixelIslandList;
 
 
-public class PlotAnalyzer extends DiagramAnalyzer {
-	private final static Logger LOG = Logger.getLogger(PlotAnalyzer.class);
+@Deprecated // moved to imageanalysis
+/** very little useful in this now */
+public class PlotAnalyzerOLD extends DiagramAnalyzerOLD {
+	private final static Logger LOG = Logger.getLogger(PlotAnalyzerOLD.class);
 
 	public final static String CSV = "-c";
 	public final static String CSV1 = "--csv";
 
 	private File csvFile;
 
-	public PlotAnalyzer() {
+	public PlotAnalyzerOLD() {
 		setDefaults();
 	}
 
@@ -31,7 +31,7 @@ public class PlotAnalyzer extends DiagramAnalyzer {
 	}
 
 	public static void main(String[] args) /*throws Exception*/ {
-		PlotAnalyzer plotAnalyzer = new PlotAnalyzer();
+		PlotAnalyzerOLD plotAnalyzer = new PlotAnalyzerOLD();
 		plotAnalyzer.parseArgs(args);
 	}
 
@@ -48,7 +48,7 @@ public class PlotAnalyzer extends DiagramAnalyzer {
 			debug = true;
 			argIterator.setDebug(true);
 			argIterator.next();
-		} else if (arg.equals(PlotAnalyzer.CSV) || arg.equals(PlotAnalyzer.CSV1)) {
+		} else if (arg.equals(PlotAnalyzerOLD.CSV) || arg.equals(PlotAnalyzerOLD.CSV1)) {
 			String value = argIterator.getSingleValue();
 			if (value != null) {
 				setCSVFile(new File(value));
@@ -71,7 +71,7 @@ public class PlotAnalyzer extends DiagramAnalyzer {
 
 	public boolean runCommands() {
 		super.processImageFile();
-		this.processGraph();
+		this.getOrCreatePixelGraphList();
 		int island = ensurePixelProcessor().getSelectedIslandIndex() ;
 		if (csvFile != null && island >= 0) {
 //			PixelGraph graph = pixelGraphList.get(island);
@@ -81,7 +81,7 @@ public class PlotAnalyzer extends DiagramAnalyzer {
 		return true;
 	}
 	
-	public void processGraph() {
+	public void getOrCreatePixelGraphList() {
 		PixelIslandList pixelIslandList = imageProcessor.getOrCreatePixelIslandList();
 //			pixelGraphList = pixelIslandList.analyzeEdgesAndPlot();
 		pixelGraphList = pixelIslandList.getOrCreateGraphList();

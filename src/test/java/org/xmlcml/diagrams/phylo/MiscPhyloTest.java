@@ -9,7 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.diagrams.Fixtures;
+import org.xmlcml.diagrams.DiagramsFixtures;
 import org.xmlcml.graphics.image.ImageIOUtil;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.image.ImageProcessor;
@@ -40,33 +40,33 @@ public class MiscPhyloTest {
 	@Test
 	// BEETLE pics
 	public void test16662GraphsAndTextThreshold() throws IOException {
-		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(Fixtures.ROSS_DIR, "pone.", "0016662.g001", 2,
+		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(DiagramsFixtures.ROSS_DIR, "pone.", "0016662.g001", 2,
 				180 /* 220 */);
 	}
 
 	@Test
 	// some italic
 	public void test17932GraphsAndText() throws IOException {
-		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(Fixtures.ROSS_DIR, "pone.", "0017932.g051", 2,
+		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(DiagramsFixtures.ROSS_DIR, "pone.", "0017932.g051", 2,
 				180);
 	}
 
 	@Test
 	// tree and madagascar
 	public void test2718GraphsAndText() throws IOException {
-		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(Fixtures.MISC_DIR, "",
+		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(DiagramsFixtures.MISC_DIR, "",
 				"14153252278_41a2718f1c_o", 2, 240);
 	}
 
 	@Test
 	public void testMadagascarGraphsAndText() throws IOException {
-		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(Fixtures.MISC_DIR, "", "madagascar", 2, 240);
+		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(DiagramsFixtures.MISC_DIR, "", "madagascar", 2, 240);
 	}
 
 	@Test
 	// some italic + simple tree
 	public void test17170GraphsAndText() throws IOException {
-		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(Fixtures.ROSS_DIR, "pone.", "0017170.g002",
+		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(DiagramsFixtures.ROSS_DIR, "pone.", "0017170.g002",
 				30, 180);
 	}
 
@@ -77,7 +77,7 @@ public class MiscPhyloTest {
 	 * */
 	public void test16923Tree() throws IOException {
 		PixelIslandList pixelIslandList = PixelIslandList.createSuperThinnedPixelIslandList(
-				DEFAULT_IMAGE_PROCESSOR.processImageFile(new File(Fixtures.ROSS_DIR, "pone.0016923.g002.png")));
+				DEFAULT_IMAGE_PROCESSOR.processImageFile(new File(DiagramsFixtures.ROSS_DIR, "pone.0016923.g002.png")));
 		PixelIsland island = pixelIslandList.get(0);
 		Assert.assertEquals("largest", 123, island.size());
 		PixelGraph graph = PixelGraph.createGraph(island);
@@ -86,14 +86,14 @@ public class MiscPhyloTest {
 
 	@Test
 	public void test16923_003Tree() throws IOException {
-		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(Fixtures.ROSS_DIR, "pone.", "0016923.g002", 2,
+		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(DiagramsFixtures.ROSS_DIR, "pone.", "0016923.g002", 2,
 				180);
 	}
 
 	@Test
 	// pastel blocks
 	public void test22249Tree() throws IOException {
-		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(Fixtures.ROSS_DIR, "pone.", "0022249.g003", 2,
+		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(DiagramsFixtures.ROSS_DIR, "pone.", "0022249.g003", 2,
 				100);
 	}
 
@@ -108,7 +108,7 @@ public class MiscPhyloTest {
 	public void test22249TreeEdges1() throws IOException {
 		String name = "0022249.g003";
 		File outputDir = new File("target/plot/"+name+"/");
-		File inputFile = new File(Fixtures.ROSS_DIR, "pone." + name + ".png");
+		File inputFile = new File(DiagramsFixtures.ROSS_DIR, "pone." + name + ".png");
 		if (!inputFile.exists()) {
 			throw new RuntimeException("file does not exist: " + inputFile);
 		}
@@ -121,7 +121,7 @@ public class MiscPhyloTest {
 	public void test22249TreeEdgesAndNodes() throws IOException {
 		String name = "0022249.g003";
 		File outputDir = new File("target/plot/"+name+"/");
-		File inputFile = new File(Fixtures.ROSS_DIR, "pone." + name + ".png");
+		File inputFile = new File(DiagramsFixtures.ROSS_DIR, "pone." + name + ".png");
 		if (!inputFile.exists()) {
 			throw new RuntimeException("file does not exist: " + inputFile);
 		}
@@ -134,7 +134,7 @@ public class MiscPhyloTest {
 	@Test
 	// serif
 	public void test18360Tree() throws IOException {
-		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(Fixtures.ROSS_DIR, "pone.", "0018360.g001", 2,
+		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(DiagramsFixtures.ROSS_DIR, "pone.", "0018360.g001", 2,
 				240);
 	}
 
@@ -160,13 +160,13 @@ public class MiscPhyloTest {
 	@Test
 	// gray and dark gray areas
 	public void test63008Tree() throws IOException {
-		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(Fixtures.ROSS_DIR, "pone.", "0063008.g001", 2,
+		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(DiagramsFixtures.ROSS_DIR, "pone.", "0063008.g001", 2,
 				30);
 	}
 
 	@Test
 	public void test86675Tree() throws IOException {
-		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(Fixtures.ROSS_DIR, "pone.", "0086675.g002", 2,
+		PhyloTreeAnalyzerTest.createGraphsCharsAndPlot(DiagramsFixtures.ROSS_DIR, "pone.", "0086675.g002", 2,
 				180);
 	}
 
@@ -176,7 +176,7 @@ public class MiscPhyloTest {
 	
 	static List<PixelGraph> createImageAndEdges(String name) throws IOException {
 		PhyloTreePixelAnalyzer phyloTree = new PhyloTreePixelAnalyzer();
-		File inputFile = new File(Fixtures.ROSS_DIR, "pone." + name + ".png");
+		File inputFile = new File(DiagramsFixtures.ROSS_DIR, "pone." + name + ".png");
 		LOG.trace(inputFile+" "+inputFile.exists());
 		phyloTree.setInputFile(inputFile);
 		phyloTree.setNewickFile(new File("target/plot/"+name+"/newick.nwk"));

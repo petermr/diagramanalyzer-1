@@ -7,12 +7,12 @@ import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Element;
 
-public class DiagramLog {
+public class DiagramLogOLD {
 
 	private File file;
 	private Element element;
 	
-	public DiagramLog(String file) {
+	public DiagramLogOLD(String file) {
 		this.element = new Element("log");
 		setOutput(new File(file));
 	}

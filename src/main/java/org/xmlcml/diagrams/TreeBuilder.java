@@ -30,7 +30,7 @@ public class TreeBuilder {
 	protected Set<PixelNode> usedNodes;
 	private Set<PixelEdge> usedEdges;
 	private ComparatorType comparatorType;
-	private DiagramTree diagramTree;
+	private DiagramTreeOLD diagramTree;
 	private PixelNode rootPixelNode;
 
 	public TreeBuilder(PixelGraph graph, ComparatorType comparatorType) {
@@ -46,7 +46,7 @@ public class TreeBuilder {
 		this.graph = graph;
 	}
 	
-	public DiagramTree createFromGraph() {
+	public DiagramTreeOLD createFromGraph() {
 		diagramTree = null;
 		if (graph != null) {
 			LOG.trace("ROOTORIG: "+rootPixelNode);
@@ -57,7 +57,7 @@ public class TreeBuilder {
 				LOG.error("CANNOT FIND ROOT");
 			} else {
 				LOG.trace("ROOT: "+rootPixelNode);
-				diagramTree = new DiagramTree();
+				diagramTree = new DiagramTreeOLD();
 				diagramTree.setGraph(graph);
 				createTree(rootPixelNode);
 				diagramTree.setRootPixelNode(rootPixelNode);
@@ -77,10 +77,10 @@ public class TreeBuilder {
 		removeUnnecessaryRootChild();
 	}
 
-	public XMLNode createXMLNode(PixelNode pixelNode) {
-		XMLNode xmlNode = null;
+	public XMLNodeOLD createXMLNode(PixelNode pixelNode) {
+		XMLNodeOLD xmlNode = null;
 		if (pixelNode != null) {
-			xmlNode = new XMLNode(diagramTree);
+			xmlNode = new XMLNodeOLD(diagramTree);
 			xmlNode.setLabel(pixelNode.getLabel());
 			xmlNode.setXY2(pixelNode.getReal2());
 		}
@@ -88,8 +88,8 @@ public class TreeBuilder {
 	}
 
 
-	XMLNode addNode(XMLNode parentXMLNode, PixelNode pixelNode) {
-		XMLNode xmlNode = null;
+	XMLNodeOLD addNode(XMLNodeOLD parentXMLNode, PixelNode pixelNode) {
+		XMLNodeOLD xmlNode = null;
 		if (usedNodes.contains(pixelNode)) {
 			LOG.error("Probable cycle in graph: "+pixelNode);
 //			throw new RuntimeException("Probable cycle in graph: "+pixelNode);
@@ -101,9 +101,9 @@ public class TreeBuilder {
 		return xmlNode;
 	}
 
-	private XMLNode createAndAddXMLNode(XMLNode parentXmlNode, PixelNode pixelNode) {
+	private XMLNodeOLD createAndAddXMLNode(XMLNodeOLD parentXmlNode, PixelNode pixelNode) {
 		LOG.trace("adding node "+pixelNode);
-		XMLNode xmlNode;
+		XMLNodeOLD xmlNode;
 		usedNodes.add(pixelNode);
 		xmlNode = createXMLNode(pixelNode);
 		if (xmlNode != null) {
@@ -116,7 +116,7 @@ public class TreeBuilder {
 		return xmlNode;
 	}
 
-	private void addEdges(XMLNode parentXMLNode, PixelNode pixelNode, PixelEdgeList edgeList) {
+	private void addEdges(XMLNodeOLD parentXMLNode, PixelNode pixelNode, PixelEdgeList edgeList) {
 		for (PixelEdge edge : edgeList) {
 			if (!usedEdges.contains(edge)) {
 				usedEdges.add(edge);
@@ -132,7 +132,7 @@ public class TreeBuilder {
 	}
 
 	// is this used?
-	private XMLNode createXMLTree() {
+	private XMLNodeOLD createXMLTree() {
 		graph.numberTerminalNodes();
 //		graph.debug();
 		usedNodes = new HashSet<PixelNode>();
@@ -146,13 +146,13 @@ public class TreeBuilder {
 	 */
 	private void removeUnnecessaryRootChild() {
 		if (diagramTree.rootXMLNode.getChildElements().size() == 1) {
-			XMLNode child = (XMLNode) diagramTree.rootXMLNode.getChildElements().get(0);
+			XMLNodeOLD child = (XMLNodeOLD) diagramTree.rootXMLNode.getChildElements().get(0);
 			child.detach();
 			diagramTree.rootXMLNode = child;
 		}
 	}
 	
-	private void processNodeAndDescendantsXML(PixelNode pixelNode, PixelNode parent, XMLNode parentElement) {
+	private void processNodeAndDescendantsXML(PixelNode pixelNode, PixelNode parent, XMLNodeOLD parentElement) {
 		parentElement.setXY2(pixelNode.getReal2());
 		usedNodes.add(pixelNode);
 		PixelEdgeList edges = pixelNode.getEdges();
@@ -165,7 +165,7 @@ public class TreeBuilder {
 			}
 		}
 		for (int i = 0; i < descendants.size(); i++) {
-			XMLNode newElement = new XMLNode(diagramTree);
+			XMLNodeOLD newElement = new XMLNodeOLD(diagramTree);
 			parentElement.appendChild(newElement);
 			String label = descendants.get(i).getLabel();
 			if (label != null) {
@@ -175,10 +175,10 @@ public class TreeBuilder {
 		}
 	}
 
-	public DiagramTree createTreeWithUnbranchedRoot() {
-		DiagramTree tree = new DiagramTree();
-		tree.rootXMLNode = new XMLNode(tree);
-		tree.rootXMLNode.setLabel(DiagramTree._ROOT);
+	public DiagramTreeOLD createTreeWithUnbranchedRoot() {
+		DiagramTreeOLD tree = new DiagramTreeOLD();
+		tree.rootXMLNode = new XMLNodeOLD(tree);
+		tree.rootXMLNode.setLabel(DiagramTreeOLD._ROOT);
 		return tree;
 	}
 
@@ -280,7 +280,7 @@ public class TreeBuilder {
 		return midPoint;
 	}
 
-	public DiagramTree getTree() {
+	public DiagramTreeOLD getTree() {
 		return diagramTree;
 	}
 

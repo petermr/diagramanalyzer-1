@@ -12,26 +12,26 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.image.pixel.PixelComparator.ComparatorType;
 
-public class XMLNode extends Element {
+public class XMLNodeOLD extends Element {
 
 	private static final String DIST_SEP = ":";
 
-	private final static Logger LOG = Logger.getLogger(XMLNode.class);
+	private final static Logger LOG = Logger.getLogger(XMLNodeOLD.class);
 	
 	static final String XY2 = "xy2";
 	static final String LABEL = "label";
 	static final String D2PARENT = "d2parent";
 	public final static String TAG = "node";
 
-	public DiagramTree tree;
+	public DiagramTreeOLD tree;
 	private double nodeRadius = 2.0;
 	
-	public XMLNode(DiagramTree tree) {
+	public XMLNodeOLD(DiagramTreeOLD tree) {
 		super(TAG);
 		this.tree = tree;
 	}
 	
-	public XMLNode(DiagramTree tree, String label) {
+	public XMLNodeOLD(DiagramTreeOLD tree, String label) {
 		this(tree);
 		setLabel(label);
 	}
@@ -65,16 +65,16 @@ public class XMLNode extends Element {
 		return (dS == null || dS.equals("")) ? null : new Double(dS);
 	}
 	
-	public void addNode(XMLNode node) {
+	public void addNode(XMLNodeOLD node) {
 		this.appendChild(node);
 		node.setTree(this.tree);
 	}
 
-	private void setTree(DiagramTree tree) {
+	private void setTree(DiagramTreeOLD tree) {
 		this.tree = tree;
 	}
 
-	void appendNewickBody(StringBuilder sb, XMLNode parent) {
+	void appendNewickBody(StringBuilder sb, XMLNodeOLD parent) {
 		int nchild = getChildElements().size();
 		if (nchild == 0) {
 			String l = this.getLabel();
@@ -82,7 +82,7 @@ public class XMLNode extends Element {
 		} else {
 			if (nchild > 1) sb.append("(");
 			for (int i = 0; i < nchild; i++) {
-				XMLNode node = (XMLNode) getChildElements().get(i);
+				XMLNodeOLD node = (XMLNodeOLD) getChildElements().get(i);
 				node.appendNewickBody(sb, this);
 				node.addDistance(sb, this);
 				if (i < this.getChildElements().size() - 1) sb.append(",");
@@ -91,7 +91,7 @@ public class XMLNode extends Element {
 		}
 	}
 
-	private void addDistance(StringBuilder sb, XMLNode parent) {
+	private void addDistance(StringBuilder sb, XMLNodeOLD parent) {
 		if (tree.outputDistances != null) {
 			Double delta = getScaledDelta(parent);
 			if (delta != null) {
@@ -106,7 +106,7 @@ public class XMLNode extends Element {
 	 * @param node
 	 * @return
 	 */
-	private Double getScaledDelta(XMLNode node) {
+	private Double getScaledDelta(XMLNodeOLD node) {
 		Real2 thisXY = this.getXY2();
 		Real2 nodeXY = node.getXY2();
 		Double d = null;
@@ -129,7 +129,7 @@ public class XMLNode extends Element {
 		g.appendChild(circle);
 		Elements childElements = this.getChildElements();
 		for (int i = 0; i < childElements.size(); i++) {
-			XMLNode child = (XMLNode) childElements.get(i);
+			XMLNodeOLD child = (XMLNodeOLD) childElements.get(i);
 			SVGLine line = new SVGLine(this.getXY2(), child.getXY2());
 			g.appendChild(line);
 			SVGG gg = child.getOrCreateSVG();

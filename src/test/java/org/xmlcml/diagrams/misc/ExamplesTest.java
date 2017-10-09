@@ -1,7 +1,7 @@
 package org.xmlcml.diagrams.misc;
 
 import org.junit.Test;
-import org.xmlcml.diagrams.DiagramAnalyzer;
+import org.xmlcml.diagrams.DiagramAnalyzerOLD;
 import org.xmlcml.diagrams.phylo.PhyloTreePixelAnalyzer;
 
 /** selected examples which show the system working.
@@ -20,7 +20,7 @@ public class ExamplesTest {
 	//			"--maxIsland", "50", // take the largest island (no magic, if not the first you have to work out which)	
 				"--island", "0"
 				};
-		DiagramAnalyzer phyloTree = new PhyloTreePixelAnalyzer();
+		DiagramAnalyzerOLD phyloTree = new PhyloTreePixelAnalyzer();
 		phyloTree.parseArgsAndRun(args);
 	}
 

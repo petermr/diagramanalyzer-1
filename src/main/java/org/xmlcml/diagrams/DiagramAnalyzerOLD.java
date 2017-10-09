@@ -2,6 +2,7 @@ package org.xmlcml.diagrams;
 
 import java.awt.image.BufferedImage;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -53,6 +54,8 @@ import org.xmlcml.svg2xml.builder.SimpleBuilder;
 
 /**
  * general analyzer of pixel diagrams.
+ * also contains command stuff which needs separating.
+ * 
  * 
  * Often subclassed (e.g. {hylogenetic Trees, molecules)
  * 
@@ -60,11 +63,12 @@ import org.xmlcml.svg2xml.builder.SimpleBuilder;
  *
  */
 
-public class DiagramAnalyzer {
+@Deprecated // moving to imageanalysis and DiagramAnalyzer
+public class DiagramAnalyzerOLD {
 
 	private static final String ROOT_REGEX = "\\$\\{root\\}";
 
-	private final static Logger LOG = Logger.getLogger(DiagramAnalyzer.class);
+	private final static Logger LOG = Logger.getLogger(DiagramAnalyzerOLD.class);
 
 	private static final String TARGET = "target/";
 
@@ -95,7 +99,7 @@ public class DiagramAnalyzer {
 
 	protected boolean debug;
 	protected ImageProcessor imageProcessor;
-	protected DiagramLog diagramLog; // yes, I should use Apache Logger...
+	protected DiagramLogOLD diagramLog; // yes, I should use Apache Logger...
 	private int maxInput;
 	protected String skipFileString;
 	protected File skipFile;
@@ -104,13 +108,13 @@ public class DiagramAnalyzer {
 	protected String fileroot;
 	private String[] extensions;
 	private boolean recurse;
-	private SVGParameters svgParameters;
+	private SVGParametersOLD svgParameters;
 
 	private SVGG svgg;
 
 	protected List<PixelGraph> pixelGraphList;
 
-	public DiagramAnalyzer() {
+	public DiagramAnalyzerOLD() {
 		setDefaults();
 		clearVariables();
 	}
@@ -179,7 +183,7 @@ public class DiagramAnalyzer {
 					setInputFilename(filename);
 				} else if (arg.equals(LOGFILE1)) {
 					String file = argIterator.getSingleValue();
-					diagramLog = new DiagramLog(file);
+					diagramLog = new DiagramLogOLD(file);
 				} else if (arg.equals(MAX_INPUT1)) {
 					setMaxInput(argIterator.getSingleIntegerValue());
 				} else if (arg.equals(OUTPUT1)) {
@@ -200,9 +204,9 @@ public class DiagramAnalyzer {
 		return found;
 	}
 
-	private SVGParameters ensureSVGParameters() {
+	private SVGParametersOLD ensureSVGParameters() {
 		if (this.svgParameters == null) {
-			svgParameters = new SVGParameters();
+			svgParameters = new SVGParametersOLD();
 		}
 		return svgParameters;
 	}
@@ -483,7 +487,6 @@ public class DiagramAnalyzer {
 		imageProcessor = new ImageProcessor();
 		imageProcessor.processImageFile(inputFile);
 		imageProcessor.getPixelProcessor().setMaxIsland(Integer.MAX_VALUE);
-		//ImageIOUtil.writeImageQuietly(imageProcessor.getImage(), new File("target/junk1.png"));
 		PixelIslandList thinnedPixelIslandList = getOrCreatePixelIslandList();
 		thinnedPixelIslandList.setDiagonal(true);
 		pixelGraphList = thinnedPixelIslandList.getOrCreateGraphList();
@@ -539,121 +542,40 @@ public class DiagramAnalyzer {
 						ringIslands = islandsOfOuterRing;
 					}
 					ringsForShapes.add(ringNumber);
-					//svg.appendChild(newIsland.createSVG());
-					for (PixelIsland shape : ringIslands) {
-						PixelOutliner outliner = new PixelOutliner(shape.getPixelList());
-						outliner.setMinPolySize(0);
-						outliner.setMaxIter(Integer.MAX_VALUE);
-						SVGPolygon polygon = outliner.createOutline().get(0);
-						SimpleBuilder.abstractPolygon(polygon, 155);
-						SVGPolygon polygon2 = offsetPolygon(polygon, ringNumber);
-						svg.appendChild(polygon2);
-						//svg.appendChild(polygon);
-						polygonList.add(polygon2);
-						polygon2.setFill("black");
-						//polygon.setFill("black");
-					}
-					
-					/*List<PixelList> allRings = new ArrayList<PixelList>();
-					for (int j = ringNumber; j >= 0; j--) {
-						allRings.add(newRings.get(j));
-					}
-					
-					PixelIsland islandForInnerRing = PixelIsland.createSeparateIslandWithClonedPixels(rings.get(ringNumber + 1), true);
-					islandForInnerRing.removeMinorIslands(3);
-					PixelList innerRing = islandForInnerRing.getPixelList();
-					for (PixelIsland shape : ringIslands) {
-						allRings.set(0, shape.getPixelList());
-						shape.getPixelList().setIsland(shape);
-						List<Pixel> startingPixels = findStartingPixels(allRings, innerRing);
-						
-						List<ListIterator<Pixel>> outlinerIterators = new ArrayList<ListIterator<Pixel>>();
-						for (int j = 0; j < allRings.size(); j++) {
-							Int2 startingLineDirection;
-							if (j < allRings.size() - 1) {
-								startingLineDirection = startingPixels.get(j + 1).getInt2().subtract(startingPixels.get(j).getInt2());
-							} else {
-								if (ringNumber > 0) {
-									startingLineDirection = startingPixels.get(j).getInt2().subtract(startingPixels.get(j - 1).getInt2());
-								} else {
-									startingLineDirection = new Int2(0, -1);
-								}
-							}
-							Int2 startingOutlineLineDirection = new Int2((startingLineDirection.getX() == 0 ? -startingLineDirection.getY() : 0), startingLineDirection.getX());
-							
-							
-							
-							
-							PixelOutliner outliner = new PixelOutliner(allRings.get(j));
-							outliner.setMaxIter(Integer.MAX_VALUE);
-							outlinerIterators.add(outliner.iterateClockwiseRoundPerimeter(startingPixels.get(j), startingOutlineLineDirection).getList().listIterator());
-						}
-						PixelList output = new PixelList();
-						onwardsToLimitingPixel(outlinerIterators, 0, null, Integer.MAX_VALUE, output, false);
-						PixelOutliner outliner = new PixelOutliner(output);
-						SVGPolygon polygon = outliner.createOutline().get(0);
-						svg.appendChild(polygon);
-						polygonList.add(polygon);
-						polygon.setFill("black");
-					}*/
-					
-					/*
-					PixelOutliner outliner = new PixelOutliner(newRing);//newIsland.getPixelsWithValue(newIsland.get(0).getValue()));
-					
-					for (SVGPolygon p : outliner.createOutline()) {
-						svg.appendChild(p);
-						polygonList.add(p);
-					}
-					for (int j = i -1; j >= 0; j--) {
-						PixelList nextRing = rings.get(j);
-						newIsland = PixelIsland.createSeparateIslandWithClonedPixels(nextRing, true);
-						svg.appendChild(newIsland.createSVG());
-						outliner = new PixelOutliner(nextRing);
-						outliner.setMaxIter(Integer.MAX_VALUE);
-						for (SVGPolygon p : outliner.createOutline()) {
-							svg.appendChild(p);
-							polygonList.add(p);
-						}
-					}*/
-					/*ringIslands.thinThickStepsOld();
-					for (PixelIsland ringIsland : ringIslands) {
-						Set<Int2> pixels = ringIsland.getPixelByCoordMap().keySet();
-						Real2Array real2s = new Real2Array();
-						for (Int2 int2 : pixels) {
-							real2s.add(new Real2(int2.getX(), int2.getY()));
-						}
-						SVGPolygon polygon = new SVGPolygon(real2s);
-						polygonList.add(polygon);
-					}*/
+					processOutliners(svg, polygonList, ringNumber, ringIslands);
 					shapesFound = true;
 					break;
 				}
 				previousIslandCount = ringIslands.size();
 				previousSize = size;
 			}
+			// end
 			ringLists.add(rings);
 			if(!shapesFound) {
 				ringsForShapes.add(rings.size());
 			}
-			/*if (ringForShapes != -1) {
-				PixelList list = new PixelList();
-				list.setIsland(island);
-				for (int j = ringForShapes; j < rings.size(); j++) {
-					list.addAll(rings.get(j));
-				}
-				PixelShell shell = new PixelShell(list);
-				for (int j = ringForShapes; j > 0; j--) {
-					shell.expandOnePixelFromCurrent();
-				}
-				PixelIsland newIsland = PixelIsland.createSeparateIslandWithClonedPixels(new PixelList(shell.getExpandedSet()), true);
-				newIsland.findRidge();
-				PixelOutliner outliner = new PixelOutliner(newIsland.getPixelsWithValue(1));
-				for (SVGPolygon p : outliner.createOutline()) {
-					svg.appendChild(p);
-				}
-			}*/
 		}
 		
+		getSegments(svg, graphs, used, ringsForShapes, ringLists, polygonListList);
+		return svg;
+	}
+
+	private void processOutliners(SVGSVG svg, List<SVGPolygon> polygonList, int ringNumber, PixelIslandList ringIslands) {
+		for (PixelIsland shape : ringIslands) {
+			PixelOutliner outliner = new PixelOutliner(shape.getPixelList());
+			outliner.setMinPolySize(0);
+			outliner.setMaxIter(Integer.MAX_VALUE);
+			SVGPolygon polygon = outliner.createOutline().get(0);
+			SimpleBuilder.abstractPolygon(polygon, 155);
+			SVGPolygon polygon2 = offsetPolygon(polygon, ringNumber);
+			svg.appendChild(polygon2);
+			polygonList.add(polygon2);
+			polygon2.setFill("black");
+		}
+	}
+
+	private void getSegments(SVGSVG svg, List<PixelGraph> graphs, Set<Integer> used, List<Integer> ringsForShapes,
+			List<PixelRingList> ringLists, List<List<SVGPolygon>> polygonListList) {
 		for (int i = 0; i < ringLists.size(); i++) {
 			if (used.contains(i)) {
 				continue;
@@ -680,45 +602,51 @@ public class DiagramAnalyzer {
 						}
 					}
 				}
-				segment: for (PixelSegment segment : segments) {
-					SVGLine line = segment.getSVGLine();
-					Double length = line.getLength();
-					if (length < distance) {
-						continue segment;
-					}
-					Real2 midPoint = line.getMidPoint();
-					Real2 quarterPoint1 = midPoint.getMidPoint(line.getXY(0));
-					Real2 quarterPoint2 = midPoint.getMidPoint(line.getXY(1));
-					for (SVGPolygon polygon : polygonListList.get(i)) {
-						Real2[] corners = polygon.getBoundingBox().getCorners();
-						if (polygon.containsPoint(midPoint, 0) && (length < corners[0].getDistance(corners[1]) / 2 || (polygon.containsPoint(quarterPoint1, 0) && polygon.containsPoint(quarterPoint2, 0)))) {
-							continue segment;
-						} else {
-							for (SVGLine polygonEdge : polygon.getLineList()) {
-								Real2 intersection = polygonEdge.getIntersection(line);
-								double lambda1 = polygonEdge.getEuclidLine().getLambda(intersection);
-								double lambda2 = line.getEuclidLine().getLambda(intersection);
-								if (lambda1 > 0 && lambda1 < 1 && lambda2 > 0 && lambda2 < 1) {
-									if (polygon.containsPoint(line.getXY(0), 0)) {
-										line.setXY(intersection, 0);
-									} else if (polygon.containsPoint(line.getXY(1), 0)) {
-										line.setXY(intersection, 1);
-									}
-									midPoint = line.getMidPoint();
-									quarterPoint1 = midPoint.getMidPoint(line.getXY(0));
-									quarterPoint2 = midPoint.getMidPoint(line.getXY(1));
-									break;
-								}
-							}
-						}
-					}
-					line.setStroke("black");
-					line.setStrokeWidth(1.0);
-					svg.appendChild(line);
-				}
+				processSegments(svg, polygonListList, i, distance, segments);
 			}
 		}
-		return svg;
+	}
+
+	private void processSegments(SVGSVG svg, List<List<SVGPolygon>> polygonListList, int i, double distance,
+			PixelSegmentList segments) {
+		segment: for (PixelSegment segment : segments) {
+			SVGLine line = segment.getSVGLine();
+			Double length = line.getLength();
+			if (length < distance) {
+				continue segment;
+			}
+			Real2 midPoint = line.getMidPoint();
+			Real2 quarterPoint1 = midPoint.getMidPoint(line.getXY(0));
+			Real2 quarterPoint2 = midPoint.getMidPoint(line.getXY(1));
+			for (SVGPolygon polygon : polygonListList.get(i)) {
+				Real2[] corners = polygon.getBoundingBox().getLLURCorners();
+				if (polygon.containsPoint(midPoint, 0) && (length < corners[0].getDistance(corners[1]) / 2 ||
+						(polygon.containsPoint(quarterPoint1, 0) && polygon.containsPoint(quarterPoint2, 0)))) {
+					continue segment;
+				} else {
+					for (SVGLine polygonEdge : polygon.getLineList()) {
+						Real2 intersection = polygonEdge.getIntersection(line);
+						double lambda1 = polygonEdge.getEuclidLine().getLambda(intersection);
+						double lambda2 = line.getEuclidLine().getLambda(intersection);
+						if (lambda1 > 0 && lambda1 < 1 && lambda2 > 0 && lambda2 < 1) {
+							if (polygon.containsPoint(line.getXY(0), 0)) {
+								line.setXY(intersection, 0);
+							} else if (polygon.containsPoint(line.getXY(1), 0)) {
+								line.setXY(intersection, 1);
+							}
+							midPoint = line.getMidPoint();
+							quarterPoint1 = midPoint.getMidPoint(line.getXY(0));
+							quarterPoint2 = midPoint.getMidPoint(line.getXY(1));
+							break;
+						}
+					}
+					LOG.debug("finished");
+				}
+			}
+			line.setStroke("black");
+			line.setStrokeWidth(1.0);
+			svg.appendChild(line);
+		}
 	}
 
 	private SVGPolygon offsetPolygon(SVGPolygon polygon, int amount) {
@@ -822,7 +750,8 @@ public class DiagramAnalyzer {
 						PixelIsland island2 = nonThinnedPixelIslandList.get(j);
 						Real2Range box2 = getBoundingBox(island2);
 						double average = (box2.getXRange().getRange() + box.getXRange().getRange()) / 2;
-						if (box.getXRange().intersectsWith(box2.getXRange()) && box2.getCentroid().getDistance(box.getCentroid()) < textHeight && Math.abs(box2.getXRange().getRange() - box.getXRange().getRange()) / average < splitCharacterRelativeWidthDifferenceTolerance) {
+//	RENAME				if (box.getXRange().intersectsWith(box2.getXRange()) && box2.getCentroid().getDistance(box.getCentroid()) < textHeight && Math.abs(box2.getXRange().getRange() - box.getXRange().getRange()) / average < splitCharacterRelativeWidthDifferenceTolerance) {
+						if (box.getXRange().intersects(box2.getXRange()) && box2.getCentroid().getDistance(box.getCentroid()) < textHeight && Math.abs(box2.getXRange().getRange() - box.getXRange().getRange()) / average < splitCharacterRelativeWidthDifferenceTolerance) {
 							if (linesThatMayBeText.get(island2) != null && linesThatMayBeText.get(island).isParallelOrAntiParallelTo(linesThatMayBeText.get(island2), new Angle(equalsSignParallelTolerance, Units.DEGREES))) {
 								box.plusEquals(box2);
 								height = (int)(double) box.getYRange().getRange();
@@ -966,7 +895,8 @@ public class DiagramAnalyzer {
 					Real2Range box2 = getBoundingBox(island2);
 					//skip &= !lookForMultiIslandCharacter(svg, used, linesThatMayBeText, manager, textHeight, circlesForPercents, island, island2, box, box2, j);
 					if (tittleTest(box, textHeight)) {
-						if (box.getXRange().intersectsWith(box2.getXRange()) && box2.getCentroid().getDistance(box.getCentroid()) < textHeight) {
+// RENAME				if (box.getXRange().intersectsWith(box2.getXRange()) && box2.getCentroid().getDistance(box.getCentroid()) < textHeight) {
+						if (box.getXRange().intersects(box2.getXRange()) && box2.getCentroid().getDistance(box.getCentroid()) < textHeight) {
 							boolean tittleSizeTest = tittleTest(box2, textHeight);
 							if (tittleSizeTest) {
 								box.plusEquals(box2);
@@ -1023,7 +953,8 @@ public class DiagramAnalyzer {
 							//skip &= !lookForLowerCaseI(used, linesThatMayBeText, textHeight, island, island2, box, box2, j);
 							Real2 middleOfTop = new Real2(box.getCentroid().getX(), box.getYMin());
 							boolean tittleSizeTest = tittleTest(box2, textHeight);
-							if (box.getXRange().intersectsWith(box2.getXRange()) && tittleSizeTest && box2.getCentroid().getDistance(middleOfTop) < textHeight * tittleDistance) {
+// RENAMED					if (box.getXRange().intersectsWith(box2.getXRange()) && tittleSizeTest && box2.getCentroid().getDistance(middleOfTop) < textHeight * tittleDistance) {
+							if (box.getXRange().intersects(box2.getXRange()) && tittleSizeTest && box2.getCentroid().getDistance(middleOfTop) < textHeight * tittleDistance) {
 								box.plusEquals(box2);
 								//used.add(j);
 								//linesThatMayBeText.remove(island);
@@ -1108,7 +1039,7 @@ public class DiagramAnalyzer {
 					used.add(i);
 					PixelIsland pixelIsland = nonThinnedPixelIslandList.get(i);
 					if (segments.size() == 1) {
-						PrincipalComponentAnalysis pc = new PrincipalComponentAnalysis();
+						PrincipalComponentAnalysisOLD pc = new PrincipalComponentAnalysisOLD();
 						PixelList pixels = pixelIsland.getPixelList();
 						pc.setup(pixels.size(), 2);
 						for (Pixel p : pixels) {
@@ -1459,8 +1390,13 @@ public class DiagramAnalyzer {
 		}
 	}
 	
+	protected void getOrCreateGraphList(File inputFile) {
+		this.setInputFile(inputFile);
+		this.processGraphList();
+	}
+
 	public static void main(String[] args) throws Exception {
-		DiagramAnalyzer analyzer = new DiagramAnalyzer();
+		DiagramAnalyzerOLD analyzer = new DiagramAnalyzerOLD();
 		analyzer.setInputFile(new File(args[0]));
 		SVGUtil.debug(analyzer.convertPixelsToSVG(), new FileOutputStream(new File(args[1])), 0);
 	}

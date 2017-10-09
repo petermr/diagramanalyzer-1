@@ -9,7 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.diagrams.Fixtures;
+import org.xmlcml.diagrams.DiagramsFixtures;
 import org.xmlcml.graphics.image.ImageIOUtil;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGPolygon;
@@ -75,7 +75,7 @@ public class WedgeAndArrowTest {
 	@Test
 	@Ignore // consumes huge CPU
 	public void testMultiwedge() throws IOException {
-		File rawfile = new File(Fixtures.MOLECULE_DIR, "multiwedge.png");
+		File rawfile = new File(DiagramsFixtures.MOLECULE_DIR, "multiwedge.png");
 		DEFAULT_IMAGE_PROCESSOR.setThinning(null);
 		DEFAULT_IMAGE_PROCESSOR.readAndProcessFile(rawfile);
 		PixelIslandList islandList = DEFAULT_IMAGE_PROCESSOR.getOrCreatePixelIslandList();

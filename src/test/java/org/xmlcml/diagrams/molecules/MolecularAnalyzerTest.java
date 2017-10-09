@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -12,12 +13,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.diagrams.Fixtures;
+import org.xmlcml.diagrams.DiagramsFixtures;
 import org.xmlcml.euclid.Int2;
 import org.xmlcml.euclid.Int2Range;
+import org.xmlcml.euclid.IntArray;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.util.ColorStore;
+import org.xmlcml.graphics.svg.util.ColorStore.ColorizerType;
 import org.xmlcml.image.ImageProcessor;
 import org.xmlcml.image.pixel.PixelEdge;
 import org.xmlcml.image.pixel.PixelEdgeList;
@@ -41,9 +45,8 @@ public class MolecularAnalyzerTest {
 
 	private final static Logger LOG = Logger.getLogger(MolecularAnalyzerTest.class);
 	
-	private final static File MOLECULES_DIR = new File("src/test/resources/org/xmlcml/diagrams/molecules");
-	private final static File TREC = new File(MOLECULES_DIR, "TREC2011testset");
-	private final static File TREC_MINI = new File(MOLECULES_DIR, "TRECmini");
+	private final static File TREC = new File(DiagramsFixtures.MOLECULE_DIR, "TREC2011testset");
+	private final static File TREC_MINI = new File(DiagramsFixtures.MOLECULE_DIR, "TRECmini");
 	private final static File TREC_OUT = new File("target/molecules/TREC2011testset");
 	
 	private final static String[] STROKES = {RED, "green", "blue", "orange", "magenta", "brown", BLACK, "pink"};
@@ -53,37 +56,41 @@ public class MolecularAnalyzerTest {
 		MoleculeTest.DEFAULT_IMAGE_PROCESSOR = ImageProcessor.createDefaultProcessor();;
 	}
 
-
-	
 	@Test
 	public void testMolecularAnalyzer() {
+		double tolerance = 0.8;
 		MolecularAnalyzer molecularAnalyzer = new MolecularAnalyzer();
-		LOG.debug(MOLECULES_DIR+": "+MOLECULES_DIR.getAbsolutePath());
-		Assert.assertTrue("MOL", MOLECULES_DIR.exists());
-		Assert.assertTrue("DIR", MOLECULES_DIR.isDirectory());
-		File[] files = MOLECULES_DIR.listFiles();
-		LOG.debug(files.length);
-		File imageFile = new File(MOLECULES_DIR, "TRECmini/US06335364-20020101-C00020.png");
-		Assert.assertTrue("MOL", imageFile.exists());
-		LOG.trace("file "+imageFile+"; exists "+imageFile.exists());
+		File[] files = DiagramsFixtures.MOLECULE_DIR.listFiles();
+		File imageFile = new File(DiagramsFixtures.MOLECULE_DIR, "TRECmini/US06335364-20020101-C00020.png");
 		molecularAnalyzer.makeMolecule(imageFile);
 		PixelIslandList pixelIslandList = molecularAnalyzer.getOrCreatePixelIslandList();
-		LOG.trace("islandList "+pixelIslandList.toString());
-		SVGSVG.wrapAndWriteAsSVG(pixelIslandList.getOrCreateSVGG(), new File("target/molecules/C00020.svg"));
+		SVGG g = new SVGG();
+		g.appendChild(pixelIslandList.getOrCreateSVGG());
+		Assert.assertEquals(8, pixelIslandList.size());
+		
+		IntArray edgeSizeArray = new IntArray(new int[]{4,7,1,1,1,1,2,5});
+		int iedge = 0;
+		Iterator<String> iterator = ColorStore.getColorIterator(ColorizerType.CONTRAST);
 		for (PixelIsland island : pixelIslandList) {
 			PixelGraph graph = new PixelGraph(island);
-			LOG.trace("==========================");
-			LOG.trace("island: "+island+"; graph: "+graph.toString());
 			PixelEdgeList edgeList = graph.getEdgeList();
+			Assert.assertEquals(edgeSizeArray.elementAt(iedge), edgeList.size());
+			LOG.debug("===="+iedge+"====");
 			for (PixelEdge edge : edgeList) {
-				LOG.trace(edge.getOrCreateSegmentList(2.0));
+				PixelSegmentList segments = edge.getOrCreateSegmentList(tolerance);
+				LOG.debug("segmentCount: "+segments.size());
+				SVGG segG = segments.getOrCreateSVG();
+				segG.setCSSStyle("stroke-width:1.0;stroke:"+iterator.next()+";");
+				g.appendChild(segG);
 			}
+			iedge++;
 		}
+		SVGSVG.wrapAndWriteAsSVG(g, new File("target/molecules/C00020.svg"));
 	}
 	
 	@Test
 	public void testWedges() {
-		testMolecularAnalyzerList(Arrays.asList(new File[]{new File(Fixtures.MOLECULE_DIR, "multiwedge.png")}));
+		testMolecularAnalyzerList(Arrays.asList(new File[]{new File(DiagramsFixtures.MOLECULE_DIR, "multiwedge.png")}));
 	}
 
 	@Test
@@ -99,48 +106,34 @@ public class MolecularAnalyzerTest {
 	}
 	
 	public void testMolecularAnalyzerList(List<File> files) {
-		Int2 maxTextSize = new Int2(20, 20);
 		for (File imageFile : files) {
 			MolecularAnalyzer molecularAnalyzer = new MolecularAnalyzer();
 			molecularAnalyzer.makeMolecule(imageFile);
 			PixelIslandList pixelIslandList = molecularAnalyzer.getOrCreatePixelIslandList();
 			String fileName = imageFile.getName();
-			LOG.trace("-----"+fileName+"----- islandList "+pixelIslandList.toString());
 			SVGG g = new SVGG();
 			SVGG mol = pixelIslandList.getOrCreateSVGG();
-			mol.setStroke(CYAN);
-			mol.setFill(CYAN);
 			g.appendChild(mol);
-			int ncolor = 0;
 			for (PixelIsland island : pixelIslandList) {
-				SVGG islandSVG = island.getOrCreateSVGG();
-				islandSVG.setFill(YELLOW);
-				islandSVG.setStroke(YELLOW);
-				g.appendChild(islandSVG);
-				Int2Range ibox = island.getIntBoundingBox();
-				if ((ibox.getXRange().getRange() > maxTextSize.getX() || ibox.getYRange().getRange() > maxTextSize.getY()) || true) {
-					ncolor++;
-					String stroke = STROKES[ncolor % STROKES.length];
-					PixelGraph graph = new PixelGraph(island);
-					LOG.trace("==========================");
-					LOG.trace("island: "+island+"; graph: "+graph.toString());
-					PixelEdgeList edgeList = graph.getEdgeList();
-					for (PixelEdge edge : edgeList) {
-						SVGG edgeSVG = edge.getOrCreateSVG();
-						edgeSVG.setFill(RED);
-						edgeSVG.setStroke(RED);
-						g.appendChild(edgeSVG);
-						for (PixelSegment segment : edge.getOrCreateSegmentList(6.0, 19, 0.7)) {
-							SVGLine line = segment.getSVGLine();
-							line.setStroke(stroke);
-							line.setStrokeWidth(2.);
-							g.appendChild(line);
-						}
-					}
-				}
+				createEdgesAsLines(island);
 			}
 			SVGSVG.wrapAndWriteAsSVG(g, new File("target/molecules/"+fileName+DOT_SVG));
 		}
+	}
+
+	private SVGG createEdgesAsLines(PixelIsland island) {
+		SVGG g = new SVGG();
+		PixelGraph graph = new PixelGraph(island);
+		PixelEdgeList edgeList = graph.getEdgeList();
+		for (PixelEdge edge : edgeList) {
+			SVGG edgeSVG = edge.getOrCreateSVG();
+			g.appendChild(edgeSVG);
+			for (PixelSegment segment : edge.getOrCreateSegmentList(6.0, 19, 0.7)) {
+				SVGLine line = segment.getSVGLine();
+				g.appendChild(line);
+			}
+		}
+		return g;
 	}
 
 	@Test
@@ -218,7 +211,7 @@ public class MolecularAnalyzerTest {
 	 * 
 	 */
 	public void testBadTREC() {
-		File imageFile = new File(MOLECULES_DIR, "TREC2011testset/bad/US20070099895A1-20070503-C00104.png");
+		File imageFile = new File(DiagramsFixtures.MOLECULE_DIR, "TREC2011testset/bad/US20070099895A1-20070503-C00104.png");
 		MolecularAnalyzer molecularAnalyzer = new MolecularAnalyzer();
 		molecularAnalyzer.makeMolecule(imageFile);
 		PixelIslandList pixelIslandList = molecularAnalyzer.getOrCreatePixelIslandList();
@@ -328,8 +321,8 @@ public class MolecularAnalyzerTest {
 			SVGG g = new SVGG();
 			PixelRingList pixelRingList = island.getOrCreateInternalPixelRings();
 			for (int j = 0; j < pixelRingList.size(); j++) {
-				int col = j % Fixtures.FILL.length;
-				pixelRingList.get(j).plotPixels(g, Fixtures.FILL[col]);
+				int col = j % DiagramsFixtures.FILL.length;
+				pixelRingList.get(j).plotPixels(g, DiagramsFixtures.FILL[col]);
 			}
 			SVGSVG.wrapAndWriteAsSVG(g, new File(TREC_OUT+"/06a/US06376484-20020423-C00698_"+i+DOT_SVG));
 			int ring = 1;

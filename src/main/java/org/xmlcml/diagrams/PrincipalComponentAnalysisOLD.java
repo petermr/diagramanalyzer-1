@@ -1,6 +1,7 @@
 package org.xmlcml.diagrams;
 
 import org.ejml.data.DenseMatrix64F;
+
 import org.ejml.factory.DecompositionFactory;
 import org.ejml.interfaces.decomposition.SingularValueDecomposition;
 import org.ejml.ops.CommonOps;
@@ -35,7 +36,7 @@ import org.ejml.ops.SingularOps;
  *
  * @author Peter Abeles
  */
-public class PrincipalComponentAnalysis {
+public class PrincipalComponentAnalysisOLD {
 
     // principal component subspace is stored in the rows
     private DenseMatrix64F V_t;
@@ -51,7 +52,7 @@ public class PrincipalComponentAnalysis {
     // mean values of each element across all the samples
     double mean[];
 
-    public PrincipalComponentAnalysis() {
+    public PrincipalComponentAnalysisOLD() {
     }
 
     /**

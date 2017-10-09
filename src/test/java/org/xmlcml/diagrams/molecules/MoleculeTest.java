@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.xmlcml.diagrams.Fixtures;
+import org.xmlcml.diagrams.DiagramsFixtures;
 import org.xmlcml.diagrams.phylo.PhyloTreeAnalyzerTest;
 import org.xmlcml.graphics.image.ImageIOUtil;
 import org.xmlcml.graphics.svg.SVGG;
@@ -35,7 +35,7 @@ public class MoleculeTest {
 	/** well behaved - all nodes identified*/
 	
 	public void testPostermolGraphsAndText() throws IOException {
-		File inputFile = new File(Fixtures.PROCESSING_DIR, "postermol.png");
+		File inputFile = new File(DiagramsFixtures.PROCESSING_DIR, "postermol.png");
 		BufferedImage image0 = ImageIO.read(inputFile);
 		ImageIOUtil.writeImageQuietly(image0, new File("target/molecules/postermolRaw.png"));
 		PixelIslandList pixelIslandList = null;
@@ -72,7 +72,7 @@ public class MoleculeTest {
 	@Test
 	public void testNatprod1GraphsAndText() throws IOException {
 		// already processed
-		File inputFile = new File(Fixtures.PROCESSING_DIR, "natprod1.png");
+		File inputFile = new File(DiagramsFixtures.PROCESSING_DIR, "natprod1.png");
 		BufferedImage image = ImageIO.read(inputFile);
 		ImageIOUtil.writeImageQuietly(image, new File("target/molecules/natprod1Raw.png"));
 		PixelIslandList pixelIslandList = ImageProcessor.createDefaultProcessorAndProcess(image).getOrCreatePixelIslandList();

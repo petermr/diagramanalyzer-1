@@ -5,9 +5,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.EuclidConstants;
 
-public class SVGParameters {
+public class SVGParametersOLD {
 
-	private final static Logger LOG = Logger.getLogger(SVGParameters.class);
+	private final static Logger LOG = Logger.getLogger(SVGParametersOLD.class);
 	
 	private static final String EDGES = "edges";
 	private static final String PIXELS = "pixels";
@@ -126,10 +126,10 @@ public class SVGParameters {
 	}
 
 	public void parseArgs(String arg, List<String> values) {
-		if (!arg.startsWith(DiagramAnalyzer.SVG1)) {
-			throw new RuntimeException("SVG args must start with: "+DiagramAnalyzer.SVG1);
+		if (!arg.startsWith(DiagramAnalyzerOLD.SVG1)) {
+			throw new RuntimeException("SVG args must start with: "+DiagramAnalyzerOLD.SVG1);
 		}
-		String arg0 = arg.substring(DiagramAnalyzer.SVG1.length());
+		String arg0 = arg.substring(DiagramAnalyzerOLD.SVG1.length());
 		if (arg0.equals(FILE)) {
 			parseFilename(values);
 		} else if (arg0.equals(EDGES)) {
