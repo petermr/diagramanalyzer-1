@@ -48,7 +48,7 @@ import org.xmlcml.image.pixel.PixelListFloodFill;
 import org.xmlcml.image.pixel.PixelOutliner;
 import org.xmlcml.image.pixel.PixelRingList;
 import org.xmlcml.image.pixel.PixelSegment;
-import org.xmlcml.image.pixel.PixelSegmentList;
+import org.xmlcml.image.pixel.EdgeSegments;
 import org.xmlcml.image.processing.Thinning;
 import org.xmlcml.svg2xml.builder.SimpleBuilder;
 
@@ -583,10 +583,10 @@ public class DiagramAnalyzerOLD {
 			PixelGraph graph = graphs.get(i);
 			double distance = Math.sqrt(2 * ringsForShapes.get(i) * ringsForShapes.get(i));
 			edge: for (PixelEdge pixelEdge : graph.getEdgeList()) {
-				PixelSegmentList segments = pixelEdge.getOrCreateSegmentList(6.0, 19, 0.7);
+				EdgeSegments segments = pixelEdge.getOrCreateSegmentList(6.0, 19, 0.7);
 				if (segments.size() == 1) {
 					for (PixelEdge otherPixelEdge : graph.getEdgeList()) {
-						PixelSegmentList otherSegments = otherPixelEdge.getOrCreateSegmentList(6.0, 19, 0.7);
+						EdgeSegments otherSegments = otherPixelEdge.getOrCreateSegmentList(6.0, 19, 0.7);
 						Line2 otherLine = otherSegments.get(0).getEuclidLine();
 						Line2 line = segments.get(0).getEuclidLine();
 						if (otherPixelEdge != pixelEdge && otherSegments.size() == 1 && otherLine.isParallelOrAntiParallelTo(line, new Angle (20, Units.DEGREES))) {
@@ -608,7 +608,7 @@ public class DiagramAnalyzerOLD {
 	}
 
 	private void processSegments(SVGSVG svg, List<List<SVGPolygon>> polygonListList, int i, double distance,
-			PixelSegmentList segments) {
+			EdgeSegments segments) {
 		segment: for (PixelSegment segment : segments) {
 			SVGLine line = segment.getSVGLine();
 			Double length = line.getLength();
@@ -1031,7 +1031,7 @@ public class DiagramAnalyzerOLD {
 				}
 			}
 			if (longEdges.size() <= 1) {
-				PixelSegmentList segments = new PixelSegmentList();
+				EdgeSegments segments = new EdgeSegments();
 				if (longEdges.size() == 1) {
 					segments = longEdges.get(0).getOrCreateSegmentList(6.0, 19, 0.7);
 				}
@@ -1390,9 +1390,9 @@ public class DiagramAnalyzerOLD {
 		}
 	}
 	
-	protected void getOrCreateGraphList(File inputFile) {
+	public List<PixelGraph> getOrCreateGraphList(File inputFile) {
 		this.setInputFile(inputFile);
-		this.processGraphList();
+		return this.processGraphList();
 	}
 
 	public static void main(String[] args) throws Exception {

@@ -20,7 +20,7 @@ import org.xmlcml.image.pixel.PixelIslandList;
 import org.xmlcml.image.pixel.PixelList;
 import org.xmlcml.image.pixel.PixelNodeList;
 import org.xmlcml.image.pixel.PixelRingList;
-import org.xmlcml.image.pixel.PixelSegmentList;
+import org.xmlcml.image.pixel.EdgeSegments;
 import org.xmlcml.image.processing.ZhangSuenThinning;
 
 public class RSCTest {
@@ -88,7 +88,7 @@ public class RSCTest {
 		PixelEdgeList edgeList = graph.getEdgeList();
 //			Assert.assertEquals("edges", 1, edgeList.size());
 		for (PixelEdge edge : edgeList) {
-			PixelSegmentList segmentList = edge.getOrCreateSegmentList(2);
+			EdgeSegments segmentList = edge.getOrCreateSegmentList(2);
 //			Assert.assertEquals("segments "+segmentList, 1, segmentList.size());
 			g.appendChild(segmentList.getOrCreateSVG());
 		}

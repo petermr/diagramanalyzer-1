@@ -32,7 +32,7 @@ import org.xmlcml.image.pixel.PixelList;
 import org.xmlcml.image.pixel.PixelNodeList;
 import org.xmlcml.image.pixel.PixelRingList;
 import org.xmlcml.image.pixel.PixelSegment;
-import org.xmlcml.image.pixel.PixelSegmentList;
+import org.xmlcml.image.pixel.EdgeSegments;
 
 public class MolecularAnalyzerTest {
 
@@ -77,7 +77,7 @@ public class MolecularAnalyzerTest {
 			Assert.assertEquals(edgeSizeArray.elementAt(iedge), edgeList.size());
 			LOG.debug("===="+iedge+"====");
 			for (PixelEdge edge : edgeList) {
-				PixelSegmentList segments = edge.getOrCreateSegmentList(tolerance);
+				EdgeSegments segments = edge.getOrCreateSegmentList(tolerance);
 				LOG.debug("segmentCount: "+segments.size());
 				SVGG segG = segments.getOrCreateSVG();
 				segG.setCSSStyle("stroke-width:1.0;stroke:"+iterator.next()+";");
@@ -452,7 +452,7 @@ public class MolecularAnalyzerTest {
 		int i = 0;
 		int[] segmentCount ={2,3};
 		for (PixelEdge thinnedEdge : thinnedEdgeList) {
-			PixelSegmentList segmentList = thinnedEdge.getOrCreateSegmentList(2.0);
+			EdgeSegments segmentList = thinnedEdge.getOrCreateSegmentList(2.0);
 //			Assert.assertEquals("segments", segmentCount[i], segmentList.size());
 			g.appendChild(segmentList.getSVGG());
 			i++;
@@ -470,7 +470,7 @@ public class MolecularAnalyzerTest {
 		thinnedEdgeList = outerThinnedGraph.getEdgeList();
 		Assert.assertEquals("edges", 1, thinnedEdgeList.size());
 		for (PixelEdge thinnedEdge : thinnedEdgeList) {
-			PixelSegmentList segmentList = thinnedEdge.getOrCreateSegmentList(2.0);
+			EdgeSegments segmentList = thinnedEdge.getOrCreateSegmentList(2.0);
 //			Assert.assertEquals("segments", 1, segmentList.size());
 			g.appendChild(segmentList.getSVGG());
 		}
@@ -508,7 +508,7 @@ public class MolecularAnalyzerTest {
 		LOG.trace("thinned nodes "+thinnedNodeList);
 		PixelEdge thinnedEdge = thinnedEdgeList.get(0);
 		LOG.trace("thinned edge "+thinnedEdge);
-		PixelSegmentList segmentList = thinnedEdge.getOrCreateSegmentList(1.0);
+		EdgeSegments segmentList = thinnedEdge.getOrCreateSegmentList(1.0);
 //		Assert.assertEquals("segments", 6, segmentList.size()); // was 1
 		LOG.trace("segments "+segmentList);
 		g.appendChild(segmentList.getSVGG());
